@@ -1,8 +1,12 @@
 import { ChevronLeft, Close, Delete, Edit } from "@mui/icons-material"
-import { Avatar, Dialog, DialogContent, DialogTitle, Divider, Grid, IconButton, Select, TextField, Theme, Typography, useTheme } from "@mui/material"
+import { DatePicker, LocalizationProvider } from '@mui/lab'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import { Avatar, Dialog, DialogContent, DialogTitle, Divider, Grid, IconButton, MenuItem, Select, TextField, Theme, Typography, useTheme } from "@mui/material"
 import { createStyles, makeStyles } from "@mui/styles"
+import ro from 'date-fns/locale/ro'
 import { useState } from "react"
-import { Type } from "../utils/type"
+import { Priority, PriorityIcons } from "../utils/priority"
+import { Type, TypeIcons } from "../utils/type"
 import SubTaskRow from "./SubtaskRow"
 
 const useStyles = makeStyles((theme: Theme) => 
@@ -23,8 +27,9 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         taskColumn: {
             display: "flex",
-            alignItems: 'start',
-            justifyContent: 'center'
+            alignItems: 'center',
+            justifyContent: 'start',
+            width:'100%',
         },
         detailsRow: {
             display: "flex",
@@ -34,13 +39,17 @@ const useStyles = makeStyles((theme: Theme) =>
             marginBottom:'1rem'
         },
         select:{
-            padding:'0 8px !important',
-            minWidth: '75px !important'
+            padding:'0 16px 0 8px !important',
+            minWidth: '75px !important',
+            marginRight: '14px !important',
+            width: '100% !important',
+            display: 'flex !important',
+            alignItems: 'center'
         },
         assignee: {
             display: "flex",
             alignItems: 'center',
-            justifyContent: 'start'
+            justifyContent: 'start',
         },
         assigneeAvatar:{
             backgroundColor: `${theme.palette.secondary.light} !important`,
@@ -55,8 +64,12 @@ const useStyles = makeStyles((theme: Theme) =>
         w80:{
             width:'80%'
         },
+        w70:{
+            width:'70%'
+        },
         textBox: {
-            padding: '4px 8px !important'
+            padding: '4px 8px !important',
+            WebkitTextFillColor: `${theme.palette.text.primary} !important`,
         },
         taskRow:{
             padding:'6px 0',
@@ -69,18 +82,21 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: '0 4px'
         },
         divider:{
-            margin:'0 8px !important'
+            display: "flex",
+            alignItems: 'start',
+            justifyContent: 'center',
+            width:'100%',
         },
     })
 )
 
-const TaskModal = () => {
+const TaskModal = ({open, onClose, parent, editable = false} : any) => {
     const theme = useTheme();
     const classes = useStyles(theme);
-    const [dueDate, setDueDate]=useState<any>()
+    const [dueDate, setDueDate]=useState<any>(new Date())
 
     return(
-        <Dialog open={true} classes={{paper: classes.dialog}}>
+        <Dialog open={open} classes={{paper: classes.dialog}}>
             <DialogTitle className={classes.dialogTitle}>
                 <div className={classes.backContainer}>
                     <ChevronLeft fontSize='small'/>
@@ -103,32 +119,43 @@ const TaskModal = () => {
                             className={classes.w80}
                             inputProps={{className: classes.textBox}}
                             placeholder="Time"
+                            variant="standard"
                         />
                     </div>
-                    <IconButton>
-                        <Edit fontSize='small'/>
-                    </IconButton>
-                    <IconButton>
-                        <Delete fontSize='small'/>
-                    </IconButton>
+                    {!editable && 
+                        <div>
+                            <IconButton>
+                                <Edit fontSize='small'/>
+                            </IconButton>
+                            <IconButton>
+                                <Delete fontSize='small'/>
+                            </IconButton>
+                        </div>
+                    }
+                    
                 </div>
                 <Grid container spacing={1}>
                     <Grid item xs={6} className={classes.taskColumn} style={{flexDirection:'column'}}>
                         
                         <div className={classes.detailsRow}>
-                            <TextField 
+                            <TextField
+                                value={'aaaaaaaaaa'}
+                                disabled={!editable}
                                 className={classes.w100} 
                                 inputProps={{className: classes.textBox}}
                                 placeholder="Name"
+                                variant="standard"
                             />
                         </div>
                         <div className={classes.detailsRow}>
                             <TextField 
-                                multiline 
+                                multiline
+                                disabled={!editable} 
                                 minRows={6} 
                                 classes={{root: classes.w100,}} 
-                                InputProps={{className: classes.textBox}}
+                                InputProps={{className: classes.textBox, style:{fontSize: '0.875rem'}}}
                                 placeholder="Description"
+                                variant="standard"
                             />
                         </div>
                         <div className={classes.detailsRow}>
@@ -149,14 +176,76 @@ const TaskModal = () => {
                             </div>
                         </div>
                     </Grid>
-                    <Grid item xs={1} className={classes.taskColumn}>
+                    <Grid item xs={1} className={classes.divider}>
                         <Divider orientation="vertical" variant="middle" flexItem/>
                     </Grid>
-                    <Grid item xs={5} className={classes.taskColumn}>
+                    <Grid item xs={5} className={classes.taskColumn} style={{flexDirection:'column'}}>
                         <div className={classes.detailsRow}>
                             <div className={classes.assignee}>
                                 <Typography variant='body2' component='span'>Due : </Typography>
+                                <LocalizationProvider
+                                dateAdapter={AdapterDateFns}
+                                locale={ro}
+                                >
+                                    <DatePicker
+                                        inputFormat="dd/MM/yyyy"
+                                        disableFuture
+                                        value={dueDate}
+                                        onChange={(newValue: any) => {
+                                            setDueDate(newValue);
+                                        }}
+                                        renderInput={(params: any) => 
+                                            <TextField variant="outlined" {...params}/>
+                                        }/>
+                                </LocalizationProvider>
                             </div>
+                        </div>
+                        <div className={classes.detailsRow}>
+                            <div className={classes.assignee}>
+                                <Typography variant='body2' component='span'>Estimate : </Typography>
+                                <TextField
+                                    // value={'2H'}
+                                    disabled={!editable}
+                                    className={classes.w70}
+                                    inputProps={{className: classes.textBox, style:{fontSize: '0.875rem'}}}
+                                    placeholder="Time"
+                                    variant="standard"
+                                />
+                            </div>
+                        </div>
+                        <div className={classes.detailsRow}>
+                            <Grid container spacing={1} className={`${classes.assignee} ${classes.w100}`}>
+                                <Grid item xs={4}>
+                                    <Typography variant='body2' component='span'>Priority : </Typography>
+                                </Grid>
+                                <Grid item xs={8}>
+                                <Select classes={{select: classes.select}} className={classes.w100}>
+                                    {Object.values(Priority).map((priority: any) => 
+                                        <MenuItem value={priority}>
+                                            {(PriorityIcons as any)[priority]}
+                                            {priority}
+                                        </MenuItem>
+                                    )}
+                                </Select>
+                                </Grid>
+                            </Grid>
+                        </div>
+                        <div className={classes.detailsRow}>
+                        <Grid container spacing={1} className={`${classes.assignee} ${classes.w100}`}>
+                                <Grid item xs={4}>
+                                    <Typography variant='body2' component='span'>Type : </Typography>
+                                </Grid>
+                                <Grid item xs={8}>
+                                <Select classes={{select: classes.select}} className={classes.w100}>
+                                    {Object.values(Type).map((type: any) => 
+                                        <MenuItem value={type}>
+                                            {(TypeIcons as any)[type]}
+                                            {type}
+                                        </MenuItem>
+                                    )}
+                                </Select>
+                                </Grid>
+                            </Grid>
                         </div>
                     </Grid>
                 </Grid>

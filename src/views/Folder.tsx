@@ -79,14 +79,11 @@ const Folder = ({tasks, loading, error, selectedFolder, getTasks}: any) => {
     const classes = useStyles(theme);
     const params = useParams();
     const [status, setStatus] = useState(Status.TO_DO);
+    const [isTaskOpen, setIsTaskOpen] = useState(true);
 
     useEffect(()=>{
         getTasks(params.folderId)
     },[])
-
-    useEffect(()=>{
-        console.log(tasks);
-    },[tasks])
 
     const changeTab = (event: React.SyntheticEvent, newValue: Status) => {
         console.log(newValue);
@@ -138,7 +135,7 @@ const Folder = ({tasks, loading, error, selectedFolder, getTasks}: any) => {
                     }
                 </Card>
             </Container>
-            <TaskModal/>
+            <TaskModal open={isTaskOpen}/>
         </>
     )
 }
