@@ -43,3 +43,36 @@ export const selectFolder = (folder: any) => {
     });
   };
 };
+
+export const selectTeamByFolder = (folderId: number) => {
+  return (dispatch: any) => {
+    const apiURL = `${process.env.REACT_APP_API_URL}/folders/team`;
+
+    const token = getAuthToken();
+
+    dispatch({
+      type: FOLDER_TYPES.GET_FOLDER_TEAM_STARTED,
+    });
+    return axios
+      .get(apiURL, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          folderId,
+        },
+      })
+      .then((response) => {
+        dispatch({
+          type: FOLDER_TYPES.GET_FOLDER_TEAM_SUCCESS,
+          team: response.data,
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: FOLDER_TYPES.GET_FOLDER_TEAM_ERROR,
+          error: error.response?.data,
+        });
+      });
+  };
+};

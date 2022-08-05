@@ -42,9 +42,6 @@ const Home = ({getTeams, addTeam, renameTeam, deleteTeam, leaveTeam, addSpace, t
         getTeams();
     },[])
 
-    useEffect(()=>{
-        console.log(teams);
-    },[teams]) 
 
     const onAddTeam = (data:any) => {
         addTeam(data.name);

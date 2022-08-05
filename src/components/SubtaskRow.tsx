@@ -35,11 +35,13 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
-const SubTaskRow = ({task}: any) => {
+const SubTaskRow = ({task, selectTask}: any) => {
     const theme = useTheme();
     const classes = useStyles(theme);
 
-    console.log(task)
+    const onSelectTask = () => {
+        selectTask(task.id)
+    }
 
     return(
             <Grid container spacing={0} className={classes.taskRow}>
@@ -47,7 +49,7 @@ const SubTaskRow = ({task}: any) => {
                     <div className={classes.taskType}>
                     {(TypeIcons as any)[task.type]}
                     </div>
-                   <Typography variant="body2">
+                   <Typography variant="body2" onClick={onSelectTask}>
                     {task.name}
                     </Typography>  
                 </Grid>

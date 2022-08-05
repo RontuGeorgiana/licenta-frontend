@@ -3,8 +3,9 @@ import { Card, Container, Grid, IconButton, Tab, Tabs, Theme, Typography, useThe
 import { createStyles, makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-import TaskModal from "../components/TaskModal";
-import TaskRow from "../components/TaskRow";
+import SetAssigneeModal from "../containers/setAssigneeModal.container";
+import TaskModal from "../containers/taskModal.container";
+import TaskRow from "../containers/taskRow.container";
 import { Status } from "../utils/status";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -74,24 +75,60 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
-const Folder = ({tasks, loading, error, selectedFolder, getTasks}: any) => {
+const Folder = ({tasks, loading, error, selectedFolder, team, getTasks, updateTask, createTask, deleteTask, getFolderTeam}: any) => {
     const theme= useTheme();
     const classes = useStyles(theme);
     const params = useParams();
     const [status, setStatus] = useState(Status.TO_DO);
-    const [isTaskOpen, setIsTaskOpen] = useState(true);
+    const [taskId, setTaskId] = useState<number>();
+    const [parentId, setParentId] = useState<number>();
+    const [createTaskOpen, setCreateTaskOpen] = useState(false);
 
     useEffect(()=>{
-        getTasks(params.folderId)
+        getTasks(params.folderId);
+        getFolderTeam(params.folderId);
     },[])
 
+    useEffect(()=>{
+        console.log(tasks)
+    },[tasks])
+
+    useEffect(()=>{console.log(taskId)},[taskId])
     const changeTab = (event: React.SyntheticEvent, newValue: Status) => {
-        console.log(newValue);
         setStatus(newValue);
     }
 
+    const onUpdateTask = (data:any) => {
+        updateTask({...data, folderId: params.folderId });
+    }
 
+    const onCreateTask = (data:any) => {
+        createTask({...data, folderId: params.folderId});
+        setCreateTaskOpen(false);
+    }
 
+    const onDeleteTask = (taskId: number) => {
+        deleteTask(taskId, params.folderId);
+        setTaskId(undefined);
+    }
+
+    const onChangeTask = (id: number) => {
+        setTaskId(undefined);
+        setTaskId(id);
+    }
+
+    const onOpenCreateSubtask=()=>{
+        setParentId(taskId);
+        setTaskId(undefined);
+        setCreateTaskOpen(true);
+    }
+
+    const onCloseCreate=()=>{
+        setParentId(undefined);
+        setTaskId(undefined);
+        setCreateTaskOpen(false);
+    }
+    
 
     return(
         <>
@@ -106,7 +143,7 @@ const Folder = ({tasks, loading, error, selectedFolder, getTasks}: any) => {
                             <Tab label={(Status as any)[key]} value={(Status as any)[key]} className={status === (Status as any)[key]? classes.tabSelected : classes.tab} />
                         ))}
                     </Tabs>
-                    <IconButton >
+                    <IconButton onClick={setCreateTaskOpen.bind(null, true)}>
                         <AddOutlined sx={{fontSize:'1.2rem', color: theme.palette.info.main}}/>
                     </IconButton>
                 </div>
@@ -122,20 +159,24 @@ const Folder = ({tasks, loading, error, selectedFolder, getTasks}: any) => {
                             <Typography variant="body2" className={classes.headerSections}>Due date</Typography>
                         </Grid>
                     </Grid>
-                    {/* {tasks && Object.keys(Status).map((key: any) => (
-                        tasks[key]?.map((task: any)=>(
-                            <TaskRow task={task}/>
-                        ))
-                    ))       
-                    } */}
                     {tasks && 
                         tasks[Object.keys(Status)[Object.values(Status).indexOf(status)]]?.map((task: any)=>(
-                            <TaskRow task={task}/>
+                            <TaskRow task={task} key={task.id} clickTask={setTaskId}/>
                         ))
                     }
                 </Card>
             </Container>
-            <TaskModal open={isTaskOpen}/>
+            {taskId &&
+                <TaskModal open={true} onClose={setTaskId.bind(null,undefined)} taskId={taskId} submit={onUpdateTask} deleteTask={onDeleteTask} changeTask={onChangeTask} openCreateSubtask={onOpenCreateSubtask}/>
+            }
+            {createTaskOpen &&
+                <TaskModal open={true} onClose={onCloseCreate} editable={true} submit={onCreateTask} parent={parentId}/>
+
+            }
+                <SetAssigneeModal teamId={team? team : 2}/>
+            
+            
+            
         </>
     )
 }

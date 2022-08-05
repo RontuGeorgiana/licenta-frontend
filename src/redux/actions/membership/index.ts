@@ -3,9 +3,13 @@ import { getAuthToken } from '../../../auth/utils/utils';
 import { IUpdateMember } from '../../../interfaces/updateMember.interface';
 import MEMBERSHIP_TYPES from '../../types/membership.types';
 
-export const getMembershipsByTeam = (teamId: number) => {
+export const getMembershipsByTeam = (teamId: number, search: string = '') => {
   return (dispatch: any) => {
-    const apiURL = `${process.env.REACT_APP_API_URL}/memberships`;
+    let apiURL = `${process.env.REACT_APP_API_URL}/memberships`;
+
+    if (search && search !== '') {
+      apiURL = apiURL + `?search=${search}`;
+    }
 
     const token = getAuthToken();
 
@@ -109,3 +113,8 @@ export const deleteMembership = (data: any) => {
       });
   };
 };
+
+export const onSearchMembership = (search: string) => ({
+  type: MEMBERSHIP_TYPES.SET_MEMBERSHIP_SEARCH,
+  payload: search,
+});

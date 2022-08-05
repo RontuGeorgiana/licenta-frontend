@@ -21,3 +21,8 @@ export const selectSelectedFolder = createSelector(
   [selectFolder],
   (folder) => folder.selectedFolder,
 );
+
+export const selectFolderTeam = createSelector(
+  [selectFolder],
+  (folder) => folder.team,
+);

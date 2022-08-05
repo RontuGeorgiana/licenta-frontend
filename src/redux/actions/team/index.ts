@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAuthToken, getUserId } from '../../../auth/utils/utils';
+import { getAuthToken } from '../../../auth/utils/utils';
 import TEAM_TYPES from '../../types/team.types';
 
 export const getTeams = () => {
@@ -113,8 +113,6 @@ export const deleteTeam = (teamId: number) => {
 };
 
 export const leaveTeam = (teamId: number) => {
-  console.log(getUserId());
-
   return (dispatch: any) => {
     const token = getAuthToken();
 

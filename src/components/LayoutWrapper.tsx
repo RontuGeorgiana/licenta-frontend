@@ -84,15 +84,13 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const LayoutWrapper = ({children}: any) => {
     const theme = useTheme();
-    console.log(theme)
-    const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+    const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(true);
     const classes = useStyles(theme);
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     const {setAuthState} = useAuthContext();
     const params = useParams();
     
-    console.log(params);
 
     const reroute = (path: string) => {
         navigate(path);

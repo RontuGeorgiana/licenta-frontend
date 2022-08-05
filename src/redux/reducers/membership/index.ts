@@ -4,6 +4,9 @@ const initialState = {
   memberships: [],
   isLoading: false,
   error: null,
+  filters: {
+    search: null,
+  },
 };
 
 const membershipReducer = (state = initialState, action: any) => {
@@ -30,6 +33,13 @@ const membershipReducer = (state = initialState, action: any) => {
         ...state,
         isLoading: false,
         error: action.error,
+      };
+    case MEMBERSHIP_TYPES.SET_MEMBERSHIP_SEARCH:
+      return {
+        ...state,
+        filters: {
+          search: action.payload,
+        },
       };
     default:
       return state;

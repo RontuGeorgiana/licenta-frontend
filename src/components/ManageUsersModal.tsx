@@ -197,8 +197,6 @@ const MemberItem = ({member, updateMembership, setToDelete}: any) => {
     const [edited, setEdited]=useState(false);
     const [role, setRole] = useState<Role>(member?.role);
 
-    console.log(member);
-
     const onChangeRole = (e: any) => {
         setEdited(true);
         setRole(e.target.value);
@@ -257,9 +255,6 @@ const ManageUsersModal = ({open, onClose, teamId, memberships, getMemberships, u
         getMemberships(teamId);
     },[])
 
-    useEffect(()=>{
-        console.log(memberships)
-    },[memberships])
 
     const deleteMember = () => {
         deleteMembership(memberToDelete);

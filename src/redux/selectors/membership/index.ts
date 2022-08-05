@@ -16,3 +16,8 @@ export const selectIsLoadingMemberships = createSelector(
   [selectMembership],
   (membership) => membership.isLoading,
 );
+
+export const selectSearchMemberships = createSelector(
+  [selectMembership],
+  (membership) => membership.filters.search,
+);

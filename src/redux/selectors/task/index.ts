@@ -13,3 +13,8 @@ export const selectIsLoadingTasks = createSelector(
   [selectTask],
   (task) => task.isLoading,
 );
+
+export const selectSelectedTask = createSelector(
+  [selectTask],
+  (task) => task.selectedTask,
+);

@@ -80,9 +80,6 @@ const FoldersContainer = ({folders, loading, error, getFolders, selectFolder}: a
         getFolders(params?.spaceId);
     },[])
 
-    useEffect(()=>{
-        console.log(folders)
-    },[folders])
     return (
         <div>
             {
