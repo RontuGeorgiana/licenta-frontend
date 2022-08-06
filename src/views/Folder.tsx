@@ -86,14 +86,12 @@ const Folder = ({tasks, loading, error, selectedFolder, team, getTasks, updateTa
 
     useEffect(()=>{
         getTasks(params.folderId);
-        getFolderTeam(params.folderId);
     },[])
 
     useEffect(()=>{
         console.log(tasks)
     },[tasks])
 
-    useEffect(()=>{console.log(taskId)},[taskId])
     const changeTab = (event: React.SyntheticEvent, newValue: Status) => {
         setStatus(newValue);
     }
@@ -128,6 +126,7 @@ const Folder = ({tasks, loading, error, selectedFolder, team, getTasks, updateTa
         setTaskId(undefined);
         setCreateTaskOpen(false);
     }
+
     
 
     return(
@@ -159,9 +158,9 @@ const Folder = ({tasks, loading, error, selectedFolder, team, getTasks, updateTa
                             <Typography variant="body2" className={classes.headerSections}>Due date</Typography>
                         </Grid>
                     </Grid>
-                    {tasks && 
-                        tasks[Object.keys(Status)[Object.values(Status).indexOf(status)]]?.map((task: any)=>(
-                            <TaskRow task={task} key={task.id} clickTask={setTaskId}/>
+                    {tasks?.taskTree && 
+                        tasks?.taskTree[Object.keys(Status)[Object.values(Status).indexOf(status)]]?.map((task: any)=>(
+                            <TaskRow task={task} key={task.id} clickTask={setTaskId} teamId={tasks.teamId}/>
                         ))
                     }
                 </Card>
@@ -173,7 +172,8 @@ const Folder = ({tasks, loading, error, selectedFolder, team, getTasks, updateTa
                 <TaskModal open={true} onClose={onCloseCreate} editable={true} submit={onCreateTask} parent={parentId}/>
 
             }
-                <SetAssigneeModal teamId={team? team : 2}/>
+            
+               
             
             
             

@@ -1,7 +1,7 @@
 import { Close, Search } from "@mui/icons-material"
 import { Avatar, Dialog, DialogActions, DialogContent, IconButton, TextField, Theme, Typography, useTheme } from "@mui/material"
 import { createStyles, makeStyles } from "@mui/styles"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { getInitials } from "../utils/utils"
 
 const useStyles = makeStyles((theme: Theme) => 
@@ -45,8 +45,8 @@ const AssigneeRow = ({membership}:any) => {
 
     return(
         <div className={classes.assigneeRow}>
-            <Avatar className={classes.assigneeAvatar}>{getInitials(`${membership?.firstName} ${membership?.lastName}`)}</Avatar>
-            <Typography variant='body2' component='span'>{`${membership?.firstName} ${membership?.lastName}`}</Typography>
+            <Avatar className={classes.assigneeAvatar}>{getInitials(`${membership?.firstname} ${membership?.lastname}`)}</Avatar>
+            <Typography variant='body2' component='span'>{`${membership?.firstname} ${membership?.lastname}`}</Typography>
         </div>
     )
 }
@@ -54,14 +54,20 @@ const AssigneeRow = ({membership}:any) => {
 const SetAssigneeModal = ({teamId, search, memberships, getMemberships, onSearchMembership}: any) => {
     const theme = useTheme();
     const classes = useStyles(theme);
+    const [searchString, setSearchString] = useState<string>('');
 
     useEffect(()=>{
         getMemberships(teamId)
     },[])
 
     useEffect(()=>{
-        getMemberships(teamId)
-    },[teamId])
+        if(searchString !== ''){
+            getMemberships(teamId, searchString)
+        }
+        
+    },[searchString])
+
+
 
     return(
         <Dialog open={true} classes={{paper: classes.dialog}}>
@@ -76,6 +82,8 @@ const SetAssigneeModal = ({teamId, search, memberships, getMemberships, onSearch
                     className={classes.w100}
                     inputProps={{className: classes.textBox}}
                     InputProps={{endAdornment: <Search/>}}
+                    value={searchString}
+                    onChange={(e) => setSearchString(e.target.value)}
                 />
                 {memberships && memberships.length>0 &&
                     memberships.map((membership: any) =>

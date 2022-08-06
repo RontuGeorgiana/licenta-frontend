@@ -1,7 +1,9 @@
 import { MoreHoriz } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary, Avatar, Grid, IconButton, Menu, MenuItem, Select, Theme, Typography, useTheme } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
+import { on } from "events";
 import { useState } from "react";
+import SetAssigneeModal from "../containers/setAssigneeModal.container";
 import { Status } from "../utils/status";
 import { TypeIcons } from "../utils/type";
 import { getInitials } from "../utils/utils";
@@ -71,13 +73,16 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
-const TaskRow = ({task, clickTask, updateTask, deleteTask}: any) => {
+const TaskRow = ({task, clickTask, updateTask, deleteTask, teamId}: any) => {
     const theme = useTheme();
     const classes = useStyles(theme);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [timeModalOpen, setTimeModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+    const [assignTaskOpen, setAssignTaskOpen] = useState(false);
 
+
+    console.log(teamId)
     const onClickTask = (e: any) => {
         e.stopPropagation();
         clickTask(task.id);
@@ -105,6 +110,11 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask}: any) => {
         deleteTask(task.id, task.folderId);
     }
 
+    const onAssign = (e: any) => {
+        e.stopPropagation();
+        setAssignTaskOpen(true);
+    }
+
     return(<>
         {task.children !== null && task.children.length > 0 &&
             <Accordion className={classes.accordion}>
@@ -125,7 +135,7 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask}: any) => {
                         <Typography variant="body2">{task?.priority? task.priority : '-'}</Typography>
                     </Grid>
                     <Grid item xs={2} md={1} className={classes.taskDetails}>
-                        <Avatar className={classes.assigneeAvatar}>{task?.asignee? getInitials(task?.asignee?.name) : '-'}</Avatar>
+                        <Avatar className={classes.assigneeAvatar} onClick={onAssign}>{task?.asignee? getInitials(task?.asignee?.name) : '-'}</Avatar>
                     </Grid>
                     <Grid item xs={2} md={1} className={classes.taskDetails}>
                     <IconButton onClick={openMenu}>
@@ -188,7 +198,7 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask}: any) => {
                     <Typography variant="body2">{task?.priority? task.priority : '-'}</Typography>
                 </Grid>
                 <Grid item xs={2} md={1} className={classes.taskDetails}>
-                    <Avatar className={classes.assigneeAvatar}>{task?.asignee? getInitials(task?.asignee?.name) : '-'}</Avatar>
+                    <Avatar className={classes.assigneeAvatar} onClick={onAssign}>{task?.asignee? getInitials(task?.asignee?.name) : '-'}</Avatar>
                 </Grid>
                 <Grid item xs={2} md={1} className={classes.taskDetails}>
                     <IconButton onClick={openMenu}>
@@ -236,6 +246,12 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask}: any) => {
             open={deleteModalOpen}
             onClose={setDeleteModalOpen.bind(null, false)}
         />
+        {assignTaskOpen &&
+            <SetAssigneeModal
+                taskId={task.id}
+                teamId = {teamId} 
+            />
+        }
         
     </>    
     )
