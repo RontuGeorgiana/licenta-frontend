@@ -2,6 +2,7 @@ import { AddOutlined } from '@mui/icons-material';
 import { Card, Container, IconButton, Typography } from '@mui/material';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import FolderRow from '../components/FolderRow';
 import TeamRow from '../components/TeamRow';
 
 const Space = ({getFolders, folders, error, isLoading}:any) =>{
@@ -22,7 +23,7 @@ const Space = ({getFolders, folders, error, isLoading}:any) =>{
             <Card>
                 {folders && folders.length > 0 &&
                     folders.map((folder:any)=> 
-                        <div>{folder.name}</div>
+                        <FolderRow folder={folder} key={folder.id}/>
                     )
 
                 }

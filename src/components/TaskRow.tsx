@@ -96,8 +96,8 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask, teamId}: any) => {
     const updateStatus = (e: any) => {
         updateTask({
             taskId: task.id,
-            status: e.target.value
-        }, task.folderId);
+            status: e.target.value,
+            folderId: task.folderId});
         setAnchorEl(null);
     }
 
@@ -113,6 +113,14 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask, teamId}: any) => {
     const onAssign = (e: any) => {
         e.stopPropagation();
         setAssignTaskOpen(true);
+    }
+
+    const onUpdateAssignee = (data: any) => {
+        updateTask({
+            ...data,
+            taskId: task.id,
+            folderId: task.folderId
+        })
     }
 
     return(<>
@@ -248,8 +256,9 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask, teamId}: any) => {
         />
         {assignTaskOpen &&
             <SetAssigneeModal
-                taskId={task.id}
-                teamId = {teamId} 
+                onClose={setAssignTaskOpen.bind(null, false)}
+                teamId = {teamId}
+                updateTaskAssignee={onUpdateAssignee}
             />
         }
         

@@ -56,7 +56,7 @@ const FolderElement = ({folder, selectFolder}: any) => {
                 <AccordionDetails className={classes.accordionContent}>
                     {
                         folder.children.map((child: any)=>
-                            <FolderElement folder={child}/>
+                            <FolderElement folder={child} key={`child${child.id}`}/>
                         )
                     }
                 </AccordionDetails>
@@ -84,7 +84,7 @@ const FoldersContainer = ({folders, loading, error, getFolders, selectFolder}: a
         <div>
             {
                 folders?.map((folder: any) => 
-                    <FolderElement folder={folder} selectFolder={selectFolder}/>
+                    <FolderElement folder={folder} selectFolder={selectFolder} key={`folder${folder.id}`}/>
                 )
             }
         </div>

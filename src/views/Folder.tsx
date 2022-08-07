@@ -75,6 +75,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
+//TODO filter bar for tasks
 const Folder = ({tasks, loading, error, selectedFolder, team, getTasks, updateTask, createTask, deleteTask, getFolderTeam}: any) => {
     const theme= useTheme();
     const classes = useStyles(theme);
@@ -127,7 +128,7 @@ const Folder = ({tasks, loading, error, selectedFolder, team, getTasks, updateTa
         setCreateTaskOpen(false);
     }
 
-    
+    console.log(selectedFolder)
 
     return(
         <>
@@ -139,7 +140,7 @@ const Folder = ({tasks, loading, error, selectedFolder, team, getTasks, updateTa
                 <div className={classes.headerContainer}>
                     <Tabs classes={{root: classes.tabsContainer, flexContainer: classes.tabsFlex}} value={status} onChange={changeTab}>
                         {Object.keys(Status).map((key: any) => (
-                            <Tab label={(Status as any)[key]} value={(Status as any)[key]} className={status === (Status as any)[key]? classes.tabSelected : classes.tab} />
+                            <Tab key={`${key}tab`} label={(Status as any)[key]} value={(Status as any)[key]} className={status === (Status as any)[key]? classes.tabSelected : classes.tab} />
                         ))}
                     </Tabs>
                     <IconButton onClick={setCreateTaskOpen.bind(null, true)}>

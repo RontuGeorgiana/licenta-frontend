@@ -1,7 +1,8 @@
 import { Close, Search } from "@mui/icons-material"
 import { Avatar, Dialog, DialogActions, DialogContent, IconButton, TextField, Theme, Typography, useTheme } from "@mui/material"
 import { createStyles, makeStyles } from "@mui/styles"
-import { useEffect, useState } from "react"
+import debounce from "lodash.debounce";
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { getInitials } from "../utils/utils"
 
 const useStyles = makeStyles((theme: Theme) => 
@@ -39,19 +40,23 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
-const AssigneeRow = ({membership}:any) => {
+const AssigneeRow = ({membership, assign}:any) => {
     const theme = useTheme();
     const classes = useStyles(theme);
 
+    const onAssign = () => {
+        assign(membership.userid);
+    }
+
     return(
-        <div className={classes.assigneeRow}>
+        <div className={classes.assigneeRow} onClick={onAssign}>
             <Avatar className={classes.assigneeAvatar}>{getInitials(`${membership?.firstname} ${membership?.lastname}`)}</Avatar>
             <Typography variant='body2' component='span'>{`${membership?.firstname} ${membership?.lastname}`}</Typography>
         </div>
     )
 }
 
-const SetAssigneeModal = ({teamId, search, memberships, getMemberships, onSearchMembership}: any) => {
+const SetAssigneeModal = ({onClose, teamId, memberships, getMemberships, updateTaskAssignee}: any) => {
     const theme = useTheme();
     const classes = useStyles(theme);
     const [searchString, setSearchString] = useState<string>('');
@@ -61,33 +66,41 @@ const SetAssigneeModal = ({teamId, search, memberships, getMemberships, onSearch
     },[])
 
     useEffect(()=>{
-        if(searchString !== ''){
-            getMemberships(teamId, searchString)
-        }
-        
+        getMemberships(teamId, searchString)
     },[searchString])
 
+    const debounceSetSearch = useCallback(debounce((search) => setSearchString(search), 250, {trailing:true}), [])
 
+    const handleChange = (e: any) =>{
+        debounceSetSearch(e.target.value);
+    }
 
+    const onSelectMembership = (userId: number) => {
+        const data = {
+            asignee: userId
+        }
+        updateTaskAssignee(data);
+        onClose();
+    }
     return(
         <Dialog open={true} classes={{paper: classes.dialog}}>
             <DialogActions>
                 <IconButton>
-                    <Close/>
+                    <Close onClick={onClose}/>
                 </IconButton>
             </DialogActions>
             <DialogContent className={classes.dialogContent}>
                 <TextField 
                     placeholder='Search assignee'
+                    defaultValue={''}
                     className={classes.w100}
                     inputProps={{className: classes.textBox}}
                     InputProps={{endAdornment: <Search/>}}
-                    value={searchString}
-                    onChange={(e) => setSearchString(e.target.value)}
+                    onChange={handleChange}
                 />
                 {memberships && memberships.length>0 &&
                     memberships.map((membership: any) =>
-                        <AssigneeRow membership={membership}/> 
+                        <AssigneeRow membership={membership} key={`member${membership.id}`} assign={onSelectMembership}/> 
                     )
                 }
             </DialogContent>
