@@ -1,9 +1,9 @@
-import { Close, Search } from "@mui/icons-material"
-import { Avatar, Dialog, DialogActions, DialogContent, IconButton, TextField, Theme, Typography, useTheme } from "@mui/material"
-import { createStyles, makeStyles } from "@mui/styles"
+import { Close, Search } from "@mui/icons-material";
+import { Avatar, Dialog, DialogActions, DialogContent, IconButton, TextField, Theme, Typography, useTheme } from "@mui/material";
+import { createStyles, makeStyles } from "@mui/styles";
 import debounce from "lodash.debounce";
-import { useCallback, useEffect, useMemo, useState } from "react"
-import { getInitials } from "../utils/utils"
+import { useCallback, useEffect, useState } from "react";
+import { getInitials } from "../utils/utils";
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -69,7 +69,7 @@ const SetAssigneeModal = ({onClose, teamId, memberships, getMemberships, updateT
         getMemberships(teamId, searchString)
     },[searchString])
 
-    const debounceSetSearch = useCallback(debounce((search) => setSearchString(search), 250, {trailing:true}), [])
+    const debounceSetSearch = useCallback(debounce((search: string) => setSearchString(search), 250, {trailing:true}), [])
 
     const handleChange = (e: any) =>{
         debounceSetSearch(e.target.value);

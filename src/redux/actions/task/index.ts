@@ -2,9 +2,25 @@ import axios from 'axios';
 import { getAuthToken } from '../../../auth/utils/utils';
 import TASK_TYPES from '../../types/task.types';
 
-export const getTasksByFolder = (folderId: number) => {
+export const getTasksByFolder = (folderId: number, filters?: any) => {
   return (dispatch: any) => {
-    const apiURL = `${process.env.REACT_APP_API_URL}/tasks`;
+    let apiURL = `${process.env.REACT_APP_API_URL}/tasks?folderId=${folderId}`;
+
+    if (filters?.search && filters?.search !== '') {
+      apiURL = apiURL + `&search=${filters?.search}`;
+    }
+
+    if (filters?.type && filters?.type !== '') {
+      apiURL = apiURL + `&type=${filters?.type}`;
+    }
+
+    if (filters?.priority && filters?.priority !== undefined) {
+      apiURL = apiURL + `&priority=${filters?.priority}`;
+    }
+
+    if (filters?.assignee && filters?.assignee !== '') {
+      apiURL = apiURL + `&assignee=${filters?.assignee}`;
+    }
 
     const token = getAuthToken();
 
@@ -15,9 +31,6 @@ export const getTasksByFolder = (folderId: number) => {
       .get(apiURL, {
         headers: {
           Authorization: `Bearer ${token}`,
-        },
-        params: {
-          folderId,
         },
       })
       .then((response) => {

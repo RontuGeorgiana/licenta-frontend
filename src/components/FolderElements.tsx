@@ -83,7 +83,7 @@ const FoldersContainer = ({folders, loading, error, getFolders, selectFolder}: a
     return (
         <div>
             {
-                folders?.map((folder: any) => 
+                folders?.folderTree?.map((folder: any) => 
                     <FolderElement folder={folder} selectFolder={selectFolder} key={`folder${folder.id}`}/>
                 )
             }

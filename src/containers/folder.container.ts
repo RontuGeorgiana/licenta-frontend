@@ -27,7 +27,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  getTasks: (folderId: number) => dispatch(getTasksByFolder(folderId)),
+  getTasks: (folderId: number, filters?: any) =>
+    dispatch(getTasksByFolder(folderId, filters)),
   updateTask: (data: any) => dispatch(updateTask(data)),
   createTask: (data: any) => dispatch(createTask(data)),
   deleteTask: (taskId: number, folderId: number) =>

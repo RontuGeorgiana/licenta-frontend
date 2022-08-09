@@ -1,7 +1,6 @@
 import { MoreHoriz } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary, Avatar, Grid, IconButton, Menu, MenuItem, Select, Theme, Typography, useTheme } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
-import { on } from "events";
 import { useState } from "react";
 import SetAssigneeModal from "../containers/setAssigneeModal.container";
 import { Status } from "../utils/status";
@@ -124,7 +123,7 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask, teamId}: any) => {
     }
 
     return(<>
-        {task.children !== null && task.children.length > 0 &&
+        {task?.children !== null && task?.children?.length > 0 &&
             <Accordion className={classes.accordion}>
                 <AccordionSummary classes={{content: classes.accordionTitle, root:classes.accordionTitle}}>
                 <Grid container spacing={1} className={classes.taskRow}>
@@ -184,13 +183,13 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask, teamId}: any) => {
                 <AccordionDetails className={classes.accordionContent}>
                     {
                         task.children.map((child: any)=>
-                            <TaskRow task={child} key={child.id} clickTask={clickTask}/>
+                            <TaskRow task={child} key={child.id} clickTask={clickTask} updateTask={updateTask} deleteTask={deleteTask} teamId={teamId}/>
                         )
                     }
                 </AccordionDetails>
             </Accordion>
         }
-        {(task.children === null || task.children.length === 0) &&
+        {(task?.children === null || task?.children?.length === 0) &&
             <Grid container spacing={1} className={classes.taskRow}>
                 <Grid item xs={3} className={classes.taskDetails} style={{justifyContent:'start'}}>
                     <div className={classes.taskType}>

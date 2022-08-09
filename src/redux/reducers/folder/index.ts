@@ -1,7 +1,7 @@
 import FOLDER_TYPES from '../../types/folder.types';
 
 const initialState = {
-  folders: [],
+  folders: {},
   isLoading: false,
   error: null,
   selectedFolder: null,
@@ -12,6 +12,9 @@ const folderReducer = (state = initialState, action: any) => {
   switch (action.type) {
     case FOLDER_TYPES.GET_FOLDER_STARTED:
     case FOLDER_TYPES.GET_FOLDER_TEAM_STARTED:
+    case FOLDER_TYPES.EDIT_FOLDER_STARTED:
+    case FOLDER_TYPES.DELETE_FOLDER_STARTED:
+    case FOLDER_TYPES.CREATE_FOLDER_STARTED:
       return {
         ...state,
         isLoading: true,
@@ -33,6 +36,9 @@ const folderReducer = (state = initialState, action: any) => {
       };
     case FOLDER_TYPES.GET_FOLDER_ERROR:
     case FOLDER_TYPES.GET_FOLDER_TEAM_ERROR:
+    case FOLDER_TYPES.EDIT_FOLDER_ERROR:
+    case FOLDER_TYPES.DELETE_FOLDER_ERROR:
+    case FOLDER_TYPES.CREATE_FOLDER_ERROR:
       return {
         ...state,
         isLoading: false,
