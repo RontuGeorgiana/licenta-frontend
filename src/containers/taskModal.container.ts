@@ -15,7 +15,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  getTaskById: (taskId: number) => dispatch(getTaskById(taskId)),
+  getTaskById: (taskId: number, teamId: number) =>
+    dispatch(getTaskById(taskId, teamId)),
   setTaskNull: () => dispatch(setTaskNull()),
 });
 

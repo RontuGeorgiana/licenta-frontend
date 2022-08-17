@@ -170,7 +170,7 @@ const Folder = ({tasks, loading, error, selectedFolder, team, getTasks, updateTa
     }
 
     const onUpdateTask = (data:any) => {
-        updateTask({...data, folderId: params.folderId });
+        updateTask({...data, folderId: params.folderId, teamId: tasks.teamId });
     }
 
     const onCreateTask = (data:any) => {
@@ -297,7 +297,7 @@ const Folder = ({tasks, loading, error, selectedFolder, team, getTasks, updateTa
                 </Card>
             </Container>
             {taskId &&
-                <TaskModal open={true} onClose={setTaskId.bind(null,undefined)} taskId={taskId} submit={onUpdateTask} deleteTask={onDeleteTask} changeTask={onChangeTask} openCreateSubtask={onOpenCreateSubtask}/>
+                <TaskModal open={true} onClose={setTaskId.bind(null,undefined)} taskId={taskId} submit={onUpdateTask} deleteTask={onDeleteTask} changeTask={onChangeTask} openCreateSubtask={onOpenCreateSubtask} teamId={tasks.teamId}/>
             }
             {createTaskOpen &&
                 <TaskModal open={true} onClose={onCloseCreate} editable={true} submit={onCreateTask} parent={parentId}/>

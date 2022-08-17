@@ -3,7 +3,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import StickyNote2OutlinedIcon from '@mui/icons-material/StickyNote2Outlined';
 import { Accordion, AccordionDetails, AccordionSummary, AppBar, Container, Drawer, IconButton, Menu, MenuItem, Theme, Toolbar, Typography } from "@mui/material";
 import { createStyles, makeStyles, useTheme } from '@mui/styles';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthContext } from '../auth/AuthContext';
 import FoldersContainer from '../containers/folderList.container';
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
         appBar:{
             position: 'fixed',
             top: 0,
-            left: 0
+            right: 0
         },
         barContent:{
             width: '100%',
@@ -84,13 +84,17 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const LayoutWrapper = ({children}: any) => {
     const theme = useTheme();
+    const params = useParams();
+    const [hasDrawer, setHasDrawer] = useState<boolean>(params?.spaceId? true : false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(true);
     const classes = useStyles(theme);
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     const {setAuthState} = useAuthContext();
-    const params = useParams();
     
+    useEffect(()=>{
+        setHasDrawer(params?.spaceId? true : false)
+    },[params])
 
     const reroute = (path: string) => {
         navigate(path);
@@ -111,10 +115,10 @@ const LayoutWrapper = ({children}: any) => {
 
     return(
         <Container className={classes.pageContainer} style={{alignItems: isDrawerOpen? 'end': 'start'}}>
-        <AppBar color="secondary" className={classes.appBar} position='fixed' style={{width: isDrawerOpen? 'calc(100% - 175px)': '100%'}}>
+        <AppBar color="secondary" className={classes.appBar} position='fixed' style={{width: hasDrawer && isDrawerOpen? 'calc(100% - 175px)': '100%'}}>
             <Container className={classes.barContent}>
                 <Toolbar disableGutters className={classes.toolbar}>
-                    {Object.keys(params).length > 0 ? 
+                    {hasDrawer ? 
                         (isDrawerOpen?
                             <ArrowBackIosNew fontSize="medium" onClick={setIsDrawerOpen.bind(null, !isDrawerOpen)}/>:
                             <MenuOutlined fontSize="medium" onClick={setIsDrawerOpen.bind(null, !isDrawerOpen)}/>
@@ -143,7 +147,7 @@ const LayoutWrapper = ({children}: any) => {
                 </Toolbar>
             </Container>
         </AppBar>
-        {Object.keys(params).length > 0 &&
+        {params?.spaceId &&
             <Drawer
                 anchor="left"
                 open={isDrawerOpen}
@@ -167,7 +171,7 @@ const LayoutWrapper = ({children}: any) => {
                 <hr className={classes.divider}/>
             </Drawer>
         }
-        <Container className={classes.page} style={{width: isDrawerOpen? 'calc(100% - 175px)': '100%'}}>
+        <Container className={classes.page} style={{width: hasDrawer && isDrawerOpen? 'calc(100% - 175px)': '100%'}}>
             {children}
         </Container>
         

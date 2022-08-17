@@ -7,6 +7,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import CommentSection from "../containers/commentSection.container";
 import { convertPriority, Priority, PriorityIcons } from "../utils/priority";
 import { Status } from '../utils/status';
 import { Type, TypeIcons } from "../utils/type";
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
         dialog:{
             width:'70% !important',
             maxWidth:'none !important',
+            height:'85vh !important',
         },
         dialogTitle:{
             display: "flex !important",
@@ -37,6 +39,7 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: 'center',
             justifyContent: 'start',
             width:'100%',
+            
         },
         detailsRow: {
             display: "flex",
@@ -76,6 +79,9 @@ const useStyles = makeStyles((theme: Theme) =>
         w70:{
             width:'70%'
         },
+        h100:{
+            height:'100%'
+        },
         textBox: {
             padding: '4px 8px !important',
             WebkitTextFillColor: `${theme.palette.text.primary} !important`,
@@ -109,10 +115,26 @@ const useStyles = makeStyles((theme: Theme) =>
             outline: 'none !important',
             minWidth: '0 !important'
         },
+        dialogContent:{
+            height:'80%'
+        },
+        scrollableContainer:{
+            height:'100%',
+            overflowY: 'scroll',
+            msOverflowStyle: 'none',
+            scrollbarWidth: 'none',
+            "&::-webkit-scrollbar": {
+                display: 'none'
+            }
+        },
+        formControl:{
+            height:'90%',
+            width: '100%'
+        }
     })
 )
 
-const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error, isLoading, getTaskById, setTaskNull, submit, deleteTask, changeTask, openCreateSubtask} : any) => {
+const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error, isLoading, getTaskById, setTaskNull, submit, deleteTask, changeTask, openCreateSubtask, teamId} : any) => {
     const theme = useTheme();
     const classes = useStyles(theme);
     const [dueDate, setDueDate]=useState<any>(new Date());
@@ -134,17 +156,21 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
     useEffect(()=>{
         reset();
         if(taskId && !editable){
-           getTaskById(taskId);
+           getTaskById(taskId, teamId);
            reset();
         }
     },[])
 
     useEffect(()=>{
         if(!editable){
-          getTaskById(taskId);
+          getTaskById(taskId, teamId);
             reset();  
         }
     },[taskId])
+
+    // useEffect(()=>{
+    //     console.log(task)
+    // },[task])
 
     const handleClose = () => {
         reset();
@@ -212,7 +238,7 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
                     <Close  fontSize='small'/>
                 </IconButton>
             </DialogTitle>
-            <DialogContent>
+            <DialogContent className={classes.dialogContent} sx={{overflowY:'hidden !important'}}>
                 {!isLoading &&
                 <>
                     <div className={classes.detailsRow}>
@@ -241,9 +267,9 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
                     }
                     
                 </div>
-                <FormControl className={classes.w100}>
-                    <Grid container spacing={1}>
-                        <Grid item xs={6} md={7} lg={8} className={classes.taskColumn} style={{flexDirection:'column'}}>
+                <FormControl className={classes.formControl}>
+                    <Grid container spacing={1} className={classes.h100}>
+                        <Grid item xs={6} md={7} lg={8} className={`${classes.taskColumn} ${classes.scrollableContainer}`} style={{flexDirection:'column'}}>
                             
                             <div className={classes.detailsRow}>
                                 <Controller
@@ -305,6 +331,13 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
                                     </div>
                                 </div>
                             }
+                            <div className={classes.detailsRow}>
+                                    <div className={classes.w100}>
+                                        <Typography variant='body1'>Comments</Typography>
+                                        <CommentSection comments={task?.comments} taskId={task?.id} teamId={teamId}/>
+                                        
+                                    </div>
+                            </div>
                         </Grid>
                         <Grid item xs={1} className={classes.divider}>
                             <Divider orientation="vertical" variant="middle" flexItem/>

@@ -32,6 +32,36 @@ export const getTeams = () => {
   };
 };
 
+export const getTeamById = (teamId: number) => {
+  return (dispatch: any) => {
+    const apiURL = `${process.env.REACT_APP_API_URL}/teams/${teamId}`;
+
+    const token = getAuthToken();
+
+    dispatch({
+      type: TEAM_TYPES.GET_TEAM_BY_ID_STARTED,
+    });
+    return axios
+      .get(apiURL, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        dispatch({
+          type: TEAM_TYPES.GET_TEAM_BY_ID_SUCCESS,
+          selectedTeam: response.data,
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: TEAM_TYPES.GET_TEAM_BY_ID_ERROR,
+          error: error.response?.data,
+        });
+      });
+  };
+};
+
 export const addTeam = (teamName: string) => {
   return (dispatch: any) => {
     const token = getAuthToken();

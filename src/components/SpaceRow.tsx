@@ -45,7 +45,7 @@ const useStyles =  makeStyles((theme: Theme) =>
     })
 )
 
-const SpaceRow = ({space, role, editSpace, deleteSpace}: any) => {
+const SpaceRow = ({space, role, editSpace, deleteSpace, absoluteRoutes}: any) => {
     const theme = useTheme();
     const classes = useStyles(theme);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -83,7 +83,8 @@ const SpaceRow = ({space, role, editSpace, deleteSpace}: any) => {
     }
 
     const accessSpace = () => {
-        navigate(`space/${space.id}`)
+        const url = absoluteRoutes? `/space/${space.id}` : `space/${space.id}`
+        navigate(url)
     } 
 
     return(

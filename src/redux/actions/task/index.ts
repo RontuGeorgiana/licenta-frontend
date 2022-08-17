@@ -48,7 +48,7 @@ export const getTasksByFolder = (folderId: number, filters?: any) => {
   };
 };
 
-export const getTaskById = (taskId: number) => {
+export const getTaskById = (taskId: number, teamId: number) => {
   return (dispatch: any) => {
     const apiURL = `${process.env.REACT_APP_API_URL}/tasks/${taskId}`;
 
@@ -60,6 +60,9 @@ export const getTaskById = (taskId: number) => {
       .get(apiURL, {
         headers: {
           Authorization: `Bearer ${token}`,
+        },
+        params: {
+          teamId,
         },
       })
       .then((response) => {
@@ -98,7 +101,7 @@ export const updateTask = (data: any) => {
         },
       })
       .then(() => {
-        dispatch(getTaskById(data.taskId));
+        dispatch(getTaskById(data.taskId, data.teamId));
         dispatch(getTasksByFolder(data.folderId));
       })
       .catch((error) => {

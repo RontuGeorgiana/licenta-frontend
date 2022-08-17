@@ -2,6 +2,7 @@ import { AddOutlined, Delete, Edit, Logout, ManageAccounts, MoreHoriz } from "@m
 import { Accordion, AccordionDetails, AccordionSummary, IconButton, Menu, MenuItem, Stack, Theme, Typography, useTheme } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import ManageUsersModal from "../containers/membersModal.container";
 import SpaceRow from "../containers/spaceRow.container";
 import { IListSpace } from "../interfaces/space.interface";
@@ -47,6 +48,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const TeamRow = ({team, editTeam, deleteTeam, addSpace, leaveTeam}: any) => {
     const theme = useTheme();
     const classes = useStyles(theme);
+    const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [isEditTeamOpen, setIsEditTeamOpen] = useState(false);
     const [isDeleteTeamOpen, setIsDeleteTeamOpen] = useState(false);
@@ -102,11 +104,15 @@ const TeamRow = ({team, editTeam, deleteTeam, addSpace, leaveTeam}: any) => {
         setIsAddSpaceOpen(false);
     }
 
+    const accessTeam= () => {
+        navigate(`/team/${team.id}`)
+    } 
+
     return(
         <>
             <Accordion className={classes.accordion}>
                 <AccordionSummary classes={{root: classes.titleContainer, content: classes.accordionTitle}}>
-                    <Typography variant='body1'>{team.name}</Typography>
+                    <Typography variant='body1' onClick={accessTeam}>{team.name}</Typography>
                     <div>
                         <IconButton onClick={openMenu}>
                             <MoreHoriz/>

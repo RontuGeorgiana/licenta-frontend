@@ -9,6 +9,7 @@ import LayoutWrapper from './components/LayoutWrapper';
 import Folder from './containers/folder.container';
 import Home from './containers/home.container';
 import Space from './containers/space.container';
+import Team from './containers/team.container';
 import Login from './views/Login';
 import SignUp from './views/SignUp';
 
@@ -62,6 +63,16 @@ function App() {
             ):(
               <Navigate to="/" replace/>
             )
+          }
+        />
+        <Route
+          path='/team/:teamId'
+          element={
+            <RequireAuth>
+              <LayoutWrapper>
+                <Team/>
+              </LayoutWrapper>
+            </RequireAuth>
           }
         />
         <Route

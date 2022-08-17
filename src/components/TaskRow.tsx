@@ -96,13 +96,15 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask, teamId}: any) => {
         updateTask({
             taskId: task.id,
             status: e.target.value,
-            folderId: task.folderId});
+            folderId: task.folderId,
+            teamId    
+        });
         setAnchorEl(null);
     }
 
     const onUpdateTime = (data: any) => {
         setTimeModalOpen(false);
-        updateTask({...data, taskId: task.id, folderId: task.folderId});
+        updateTask({...data, taskId: task.id, folderId: task.folderId, teamId});
     }
 
     const onDelete = () => {
@@ -118,7 +120,8 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask, teamId}: any) => {
         updateTask({
             ...data,
             taskId: task.id,
-            folderId: task.folderId
+            folderId: task.folderId,
+            teamId,
         })
     }
 
