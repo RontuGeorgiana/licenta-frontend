@@ -103,6 +103,8 @@ const EventList = ({teamId, events, getEvents, selectEvent}: any) => {
     const [createEventOpen, setCreateEventOpen] = useState(false);
 
     useEffect(()=>{
+        startDate?.setHours(startDate?.getTimezoneOffset()/(-60));
+        endDate?.setHours(endDate?.getTimezoneOffset()/(-60)+23, 59, 59);
         let filters: any = {};
 
         if(startDate!==null){
@@ -121,7 +123,10 @@ const EventList = ({teamId, events, getEvents, selectEvent}: any) => {
     },[])
 
     useEffect(()=>{
-        console.log(eventType)
+        startDate?.setHours(startDate?.getTimezoneOffset()/(-60));
+        endDate?.setHours(endDate?.getTimezoneOffset()/(-60)+24);
+        console.log(endDate);
+        console.log(endDate?.toISOString());
         let filters: any = {};
 
         if(startDate!==null){

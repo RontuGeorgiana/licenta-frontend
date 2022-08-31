@@ -16,7 +16,8 @@ const mapStateToProps = createStructuredSelector({
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  getMemberships: (teamId: number, search:string) => dispatch(getMembershipsByTeam(teamId, search)),
+  getMemberships: (teamId: number, search: string) =>
+    dispatch(getMembershipsByTeam(teamId, search, true)),
   onSearchMembership: (search: string) => dispatch(onSearchMembership(search)),
 });
 

@@ -3,12 +3,20 @@ import { getAuthToken } from '../../../auth/utils/utils';
 import { IUpdateMember } from '../../../interfaces/updateMember.interface';
 import MEMBERSHIP_TYPES from '../../types/membership.types';
 
-export const getMembershipsByTeam = (teamId: number, search: string = '') => {
+export const getMembershipsByTeam = (
+  teamId: number,
+  search: string = '',
+  available?: boolean,
+) => {
   return (dispatch: any) => {
-    let apiURL = `${process.env.REACT_APP_API_URL}/memberships`;
+    let apiURL = `${process.env.REACT_APP_API_URL}/memberships?teamId=${teamId}`;
 
     if (search && search !== '') {
-      apiURL = apiURL + `?search=${search}`;
+      apiURL = apiURL + `&search=${search}`;
+    }
+
+    if (available) {
+      apiURL = apiURL + `&available=${available}`;
     }
 
     const token = getAuthToken();
@@ -21,9 +29,9 @@ export const getMembershipsByTeam = (teamId: number, search: string = '') => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        params: {
-          teamId,
-        },
+        // params: {
+        //   teamId,
+        // },
       })
       .then((response) => {
         dispatch({

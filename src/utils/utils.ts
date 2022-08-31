@@ -38,6 +38,7 @@ export const secondsToTime = (seconds: number) => {
 
 export const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
+  // console.log(date);
 
   return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
 };

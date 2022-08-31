@@ -224,6 +224,8 @@ const CreateEvent = ({onClose, teamId, memberships, getMemberships, createEvent}
     const onSubmit = (data: any) => {
         let payload = {
             ...data,
+            start: new Date(data.start).toISOString(),
+            end: new Date(data.end).toISOString(),
             teamId
         }
         if(selectedParticipants.length>0){
