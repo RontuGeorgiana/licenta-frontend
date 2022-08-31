@@ -1,4 +1,7 @@
 export const getInitials = (name: string) => {
+  // if (!name || name === '') {
+  //   return '';
+  // }
   const initials = name
     .split(' ')
     .map((word: string) => word[0].toUpperCase())
@@ -38,7 +41,6 @@ export const secondsToTime = (seconds: number) => {
 
 export const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
-  // console.log(date);
 
-  return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
+  return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
 };

@@ -176,7 +176,6 @@ const CreateEvent = ({onClose, teamId, memberships, getMemberships, createEvent}
     const [selectedParticipants, setSelectedParticipants] = useState<any[]>([]);
 
     useEffect(()=>{
-        console.log(teamId)
         getMemberships(teamId)
     },[])
 

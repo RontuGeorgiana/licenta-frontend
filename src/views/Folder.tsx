@@ -162,7 +162,6 @@ const Folder = ({tasks, loading, error, selectedFolder, team, getTasks, updateTa
     },[searchString, taskType, taskPriority, taskAssignee])
 
     useEffect(()=>{
-        console.log(tasks)
     },[tasks])
 
     const changeTab = (event: React.SyntheticEvent, newValue: Status) => {
@@ -300,7 +299,7 @@ const Folder = ({tasks, loading, error, selectedFolder, team, getTasks, updateTa
                 <TaskModal open={true} onClose={setTaskId.bind(null,undefined)} taskId={taskId} submit={onUpdateTask} deleteTask={onDeleteTask} changeTask={onChangeTask} openCreateSubtask={onOpenCreateSubtask} teamId={tasks.teamId}/>
             }
             {createTaskOpen &&
-                <TaskModal open={true} onClose={onCloseCreate} editable={true} submit={onCreateTask} parent={parentId}/>
+                <TaskModal open={true} onClose={onCloseCreate} editable={true} submit={onCreateTask} parent={parentId} teamId={tasks.teamId}/>
 
             }
             

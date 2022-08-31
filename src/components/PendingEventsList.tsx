@@ -70,7 +70,6 @@ const PendingEventsList = ({teamId, events, getPendingEvents, resolveEvent}: any
     const classes = useStyles(theme);
 
     useEffect(()=> {
-        console.log(teamId)
         getPendingEvents(teamId);
     },[])
 

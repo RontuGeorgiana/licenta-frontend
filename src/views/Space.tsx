@@ -29,10 +29,6 @@ const Space = ({getFolders, selectFolder, createFolder, folders, error, isLoadin
     useEffect(()=>{
         getFolders(params?.spaceId)
     },[])
-
-    useEffect(()=>{
-        console.log(folders)
-    },[folders])
     
     const onCreateFolder = (data: any) => {
         const payload = {

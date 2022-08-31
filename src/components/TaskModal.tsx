@@ -8,10 +8,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import CommentSection from "../containers/commentSection.container";
+import { default as SetAssigneeModal } from "../containers/setAssigneeModal.container";
 import { convertPriority, Priority, PriorityIcons } from "../utils/priority";
 import { Status } from '../utils/status';
 import { Type, TypeIcons } from "../utils/type";
-import { secondsToTime, timeToSeconds } from "../utils/utils";
+import { getInitials, secondsToTime, timeToSeconds } from "../utils/utils";
 import ConfirmationModal from "./ConfirmModal";
 import SubTaskRow from "./SubtaskRow";
 import TimeModal from "./TimeModal";
@@ -142,6 +143,8 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
     const [canEdit, setCanEdit] = useState(editable);
     const [isTimeModalOpen, setIsTimeModalOpen] = useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [assignTaskOpen, setAssignTaskOpen] = useState(false);
+    const [asignee, setAssignee] = useState<any>();
 
     const {
         handleSubmit,
@@ -168,10 +171,6 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
         }
     },[taskId])
 
-    // useEffect(()=>{
-    //     console.log(task)
-    // },[task])
-
     const handleClose = () => {
         reset();
         setTaskNull();
@@ -190,6 +189,15 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
         setIsTimeModalOpen(false);
         submit({...data, taskId: taskId});
     };
+
+    const onUpdateAssignee = (data: any) => {
+        if(editable){
+            setAssignee(data);
+        } else {
+            submit({asignee: data.asignee, taskId: taskId});
+        }
+        setAssignTaskOpen(false);
+    }
    
     const onSubmit = (data: any) => {
         let payload:any = {
@@ -206,9 +214,14 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
         if(data.estimation){
             payload['estimation'] = timeToSeconds(data.estimation);
         }
-        console.log(payload);
+        if(asignee){
+            payload['asignee']=asignee.asignee;
+        }
         submit(payload);
         setCanEdit(false);
+        reset();
+        setAssignee(null);
+        setStatus(undefined);
     }
 
     const onDelete = () => {
@@ -247,9 +260,9 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
                             <MenuItem value={status} key={status}>{status}</MenuItem>
                         )}
                     </Select>
-                    <div className={classes.assignee}>
-                        <Avatar className={classes.assigneeAvatar}>A</Avatar>
-                        <Typography variant='body2' component='span'>Assignee</Typography>
+                    <div className={classes.assignee} onClick={setAssignTaskOpen.bind(null, true)}>
+                        <Avatar className={classes.assigneeAvatar}>{(editable && asignee?.name)? getInitials(asignee?.name) : task?.asignee?.name ? getInitials(task?.asignee?.name) : '-'}</Avatar>
+                        <Typography variant='body2' component='span'>{(editable && asignee?.name)? asignee?.name : task?.asignee? task?.asignee?.name : '---'}</Typography>
                     </div>
                     <div className={classes.assignee} onClick={setIsTimeModalOpen.bind(null, true)}>
                         <Typography variant="body2" component="span">Time : </Typography>
@@ -319,7 +332,8 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
                                         <Typography variant='body1'>Subtasks</Typography>
                                         {task?.children && task?.children.length > 0 &&
                                             task?.children.map((child: any) => (
-                                                <SubTaskRow 
+                                                <SubTaskRow
+                                                key={`subtask${child.id}`}
                                                 task={child}
                                                 selectTask = {changeTask}
                                             />
@@ -331,13 +345,16 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
                                     </div>
                                 </div>
                             }
-                            <div className={classes.detailsRow}>
+                            {!editable &&
+                                <div className={classes.detailsRow}>
                                     <div className={classes.w100}>
                                         <Typography variant='body1'>Comments</Typography>
                                         <CommentSection comments={task?.comments} taskId={task?.id} teamId={teamId}/>
                                         
                                     </div>
-                            </div>
+                                </div>
+                            }
+                            
                         </Grid>
                         <Grid item xs={1} className={classes.divider}>
                             <Divider orientation="vertical" variant="middle" flexItem/>
@@ -422,7 +439,7 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
                                                 disabled={!(canEdit || editable)} 
                                             >
                                                 {Object.values(Priority).map((priority: any) => 
-                                                    <MenuItem value={convertPriority(null, priority)}>
+                                                    <MenuItem value={convertPriority(null, priority)} key={`priority${priority}`}>
                                                         {(PriorityIcons as any)[priority]}
                                                         {priority}
                                                     </MenuItem>
@@ -452,7 +469,7 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
                                                     disabled={!(canEdit || editable)} 
                                                 >
                                                     {Object.values(Type).map((type: any) => 
-                                                        <MenuItem value={type}>
+                                                        <MenuItem value={type} key={`type${type}`}>
                                                             {(TypeIcons as any)[type]}
                                                             {type}
                                                         </MenuItem>
@@ -486,6 +503,13 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
                 open={isDeleteOpen}
                 onClose={setIsDeleteOpen.bind(null, false)}
             />
+        {assignTaskOpen &&
+            <SetAssigneeModal
+                onClose={setAssignTaskOpen.bind(null, false)}
+                teamId = {teamId}
+                updateTaskAssignee={onUpdateAssignee}
+            />
+        }
         </>
     )
 }

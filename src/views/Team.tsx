@@ -33,9 +33,6 @@ const Team = ({team, getTeam}: any) => {
         getTeam(params.teamId)
     },[])
 
-    useEffect(()=>{
-        console.log(team)
-    },[team])
 
     const onSelectType = (e: any) => {
         setEventType(e.target.value)

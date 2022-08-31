@@ -125,8 +125,6 @@ const EventList = ({teamId, events, getEvents, selectEvent}: any) => {
     useEffect(()=>{
         startDate?.setHours(startDate?.getTimezoneOffset()/(-60));
         endDate?.setHours(endDate?.getTimezoneOffset()/(-60)+24);
-        console.log(endDate);
-        console.log(endDate?.toISOString());
         let filters: any = {};
 
         if(startDate!==null){

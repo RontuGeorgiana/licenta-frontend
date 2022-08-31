@@ -59,7 +59,7 @@ const SubTaskRow = ({task, selectTask}: any) => {
                     <Typography variant="body2">{task?.priority? task.priority : '-'}</Typography>
                 </Grid>
                 <Grid item xs={2} md={1} className={classes.taskDetails}>
-                    <Avatar className={classes.assigneeAvatar}>{task?.asignee? getInitials(task?.asignee?.name) : '-'}</Avatar>
+                    <Avatar className={classes.assigneeAvatar}>{task?.asignee?.name? getInitials(task?.asignee?.name) : '-'}</Avatar>
                 </Grid>
             </Grid>
     )

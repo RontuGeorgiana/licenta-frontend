@@ -43,8 +43,6 @@ const Comment= ({comment} :any) => {
     const theme = useTheme();
     const classes = useStyles(theme);
 
-    console.log(comment);
-
     return(
         <Box className={classes.commentContainer}>
             <div className={classes.commentHeader}>

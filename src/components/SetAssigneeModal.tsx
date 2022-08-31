@@ -45,7 +45,7 @@ const AssigneeRow = ({membership, assign}:any) => {
     const classes = useStyles(theme);
 
     const onAssign = () => {
-        assign(membership.userid);
+        assign(membership);
     }
 
     return(
@@ -75,9 +75,10 @@ const SetAssigneeModal = ({onClose, teamId, memberships, getMemberships, updateT
         debounceSetSearch(e.target.value);
     }
 
-    const onSelectMembership = (userId: number) => {
+    const onSelectMembership = (membership: any) => {
         const data = {
-            asignee: userId
+            asignee: membership.userid,
+            name: `${membership?.firstname} ${membership?.lastname}`
         }
         updateTaskAssignee(data);
         onClose();

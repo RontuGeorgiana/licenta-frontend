@@ -80,8 +80,6 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask, teamId}: any) => {
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [assignTaskOpen, setAssignTaskOpen] = useState(false);
 
-
-    console.log(teamId)
     const onClickTask = (e: any) => {
         e.stopPropagation();
         clickTask(task.id);
@@ -118,7 +116,7 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask, teamId}: any) => {
 
     const onUpdateAssignee = (data: any) => {
         updateTask({
-            ...data,
+            asignee: data.asignee,
             taskId: task.id,
             folderId: task.folderId,
             teamId,
