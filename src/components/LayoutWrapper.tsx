@@ -3,7 +3,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import StickyNote2OutlinedIcon from '@mui/icons-material/StickyNote2Outlined';
 import { Accordion, AccordionDetails, AccordionSummary, AppBar, Container, Drawer, IconButton, Menu, MenuItem, Theme, Toolbar, Typography } from "@mui/material";
 import { createStyles, makeStyles, useTheme } from '@mui/styles';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthContext } from '../auth/AuthContext';
 import FoldersContainer from '../containers/folderList.container';
@@ -31,18 +31,18 @@ const useStyles = makeStyles((theme: Theme) =>
             maxWidth: 'none !important',
         },
         toolbar:{
-            minHeight: '46px',
+            minHeight: '0px !important',
             justifyContent: 'space-between'
         },
         logo:{
             cursor:'pointer', 
-            color: theme.palette.secondary.contrastText,
+            color: theme.palette.primary.contrastText,
         },
         drawerMenu:{
-         background:`${theme.palette.primary.main} !important`,
+         background:`${theme.palette.background.default} !important`,
          width:'175px',
+         overflowX: 'hidden',
         //  padding:'8px'
-
         },
         page:{
             // width:'calc(100% - 175px) !important'
@@ -53,7 +53,10 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             justifyContent:'center',
             alignItems:'center',
-            padding: '8px'
+            padding: '4px 8px',
+            minHeight: '46px',
+            background: theme.palette.primary.main,
+            borderBottom: `1px solid ${theme.palette.primary.dark}`
         },
         drawerTitle: {
             display:'inline-block'
@@ -115,7 +118,7 @@ const LayoutWrapper = ({children}: any) => {
 
     return(
         <Container className={classes.pageContainer} style={{alignItems: isDrawerOpen? 'end': 'start'}}>
-        <AppBar color="secondary" className={classes.appBar} position='fixed' style={{width: hasDrawer && isDrawerOpen? 'calc(100% - 175px)': '100%'}}>
+        <AppBar color="primary" className={classes.appBar} position='fixed' style={{width: hasDrawer && isDrawerOpen? 'calc(100% - 175px)': '100%'}}>
             <Container className={classes.barContent}>
                 <Toolbar disableGutters className={classes.toolbar}>
                     {hasDrawer ? 
@@ -159,9 +162,9 @@ const LayoutWrapper = ({children}: any) => {
                     <StickyNote2OutlinedIcon fontSize="medium" onClick={reroute.bind(null, '/')}/>
                     <Typography variant="h6" className={classes.drawerTitle}>STICK TO IT</Typography>
                 </div>
-                <br/>
+                {/* <br/>
                 <hr className={classes.divider}/>
-                <br/>
+                <br/> */}
                 <Accordion className={classes.drawerDropdown}>
                     <AccordionSummary classes={{content: classes.drawerDropdownTitle, root:classes.drawerDropdownTitle}}>Folders</AccordionSummary>
                     <AccordionDetails className={classes.drawerDropdownContent}>
