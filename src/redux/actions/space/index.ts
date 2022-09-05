@@ -26,6 +26,33 @@ export const addSpace = (data: any) => {
   };
 };
 
+export const getSpaceNavigation = (spaceId: number) => {
+  return (dispatch: any) => {
+    const token = getAuthToken();
+
+    dispatch({type: SPACE_TYPES.GET_SPACE_NAVIGATION_STARTED})
+    return axios
+      .get(`${process.env.REACT_APP_API_URL}/spaces/${spaceId}/navigation`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        dispatch({
+          type: SPACE_TYPES.GET_SPACE_NAVIGATION_SUCCESS,
+          navigation: response.data
+        })
+      })
+      .catch((error) => {
+        dispatch({
+          type: SPACE_TYPES.GET_SPACE_NAVIGATION_ERROR,
+          error: error.response?.data,
+        });
+      })
+    
+  }
+}
+
 export const editSpace = (data: any) => {
   return (dispatch: any) => {
     const token = getAuthToken();

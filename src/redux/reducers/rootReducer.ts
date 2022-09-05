@@ -5,6 +5,8 @@ import folder from './folder';
 import membership from './membership';
 import task from './task';
 import team from './team';
+import user from './user';
+import space from './space';
 
 const rootReducer = combineReducers({
   team,
@@ -12,6 +14,8 @@ const rootReducer = combineReducers({
   folder,
   task,
   event,
+  user,
+  space
 });
 
 export default rootReducer;

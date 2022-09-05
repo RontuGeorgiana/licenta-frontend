@@ -28,8 +28,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         actions:{
             paddingTop: 0,
-            display:'flex',
-            justifyContent:'space-between'
+            display:'flex !important',
+            justifyContent:'space-between !important'
         }
     })
 )

@@ -127,6 +127,11 @@ const useStyles = makeStyles((theme: Theme) =>
             width:'100%',
             padding:'8px 0'
         },
+        actions:{
+            paddingTop: 0,
+            display:'flex !important',
+            justifyContent:'space-between !important'
+        }
     })
 )
 
@@ -415,7 +420,7 @@ const CreateEvent = ({onClose, teamId, memberships, getMemberships, createEvent}
                     </Grid>
                 </FormControl>
             </DialogContent>
-            <DialogActions>
+            <DialogActions className={classes.actions}>
                 <Button color='info' onClick={onClose}>Cancel</Button>
                 <Button color='secondary' variant='contained' onClick={handleSubmit(onSubmit)}>Save</Button>
             </DialogActions>

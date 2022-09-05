@@ -1,12 +1,13 @@
 import { ArrowBackIosNew, MenuOutlined } from '@mui/icons-material';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import StickyNote2OutlinedIcon from '@mui/icons-material/StickyNote2Outlined';
-import { Accordion, AccordionDetails, AccordionSummary, AppBar, Container, Drawer, IconButton, Menu, MenuItem, Theme, Toolbar, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, AppBar, Avatar, Container, Drawer, IconButton, Menu, MenuItem, Theme, Toolbar, Typography } from "@mui/material";
 import { createStyles, makeStyles, useTheme } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthContext } from '../auth/AuthContext';
 import FoldersContainer from '../containers/folderList.container';
+import { getInitials } from '../utils/utils';
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -31,7 +32,7 @@ const useStyles = makeStyles((theme: Theme) =>
             maxWidth: 'none !important',
         },
         toolbar:{
-            minHeight: '0px !important',
+            minHeight: '46px !important',
             justifyContent: 'space-between'
         },
         logo:{
@@ -45,9 +46,12 @@ const useStyles = makeStyles((theme: Theme) =>
         //  padding:'8px'
         },
         page:{
-            // width:'calc(100% - 175px) !important'
+            width:'100%',
             margin: '0 !important',
-            padding: '0 !important'
+            padding: '0 !important',
+            display: 'flex !importat',
+            flexDirection: 'column',
+            alignItems:'center'
         },
         drawerHeader:{
             display: 'flex',
@@ -56,7 +60,8 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: '4px 8px',
             minHeight: '46px',
             background: theme.palette.primary.main,
-            borderBottom: `1px solid ${theme.palette.primary.dark}`
+            // borderBottom: `1px solid ${theme.palette.primary.dark}`
+            boxShadow: '0px 2px 4px 1px rgb(0 0 0 / 17%)'
         },
         drawerTitle: {
             display:'inline-block'
@@ -69,7 +74,7 @@ const useStyles = makeStyles((theme: Theme) =>
             boxShadow: 'none !important',
             borderRadius: '0 !important',
             background: `${theme.palette.primary.main} !important`,
-            margin: '0 !important',
+            margin: '50px 0 0 0 !important',
         },
         drawerDropdownTitle:{
             padding:'0px !important',
@@ -81,13 +86,33 @@ const useStyles = makeStyles((theme: Theme) =>
             padding:'0px 16px!important',
             borderTop: `1px solid ${theme.palette.secondary.light}`
         },
-
+        assigneeRow:{
+            display:'flex',
+            justifyContent:'start',
+            alignItems:'center',
+            width:'100%',
+            // padding:'8px 0'
+            cursor:'pointer'
+        },
+        assigneeAvatar:{
+            backgroundColor: `${theme.palette.secondary.dark} !important`,
+            color: theme.palette.secondary.contrastText,
+            width: '1.8rem !important',
+            height: '1.8rem !important',
+            fontSize: '1.1rem !important',
+            marginRight: '4px'
+        },
+        userName:{
+            padding:'0 16px',
+            borderBottom:`1px solid ${theme.palette.primary.dark}`
+        }
     })
 )
 
-const LayoutWrapper = ({children}: any) => {
+const LayoutWrapper = ({userDetails, isLoading, error, getUserDetails, children}: any) => {
     const theme = useTheme();
     const params = useParams();
+    const {isAuthenticated} = useAuthContext();
     const [hasDrawer, setHasDrawer] = useState<boolean>(params?.spaceId? true : false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(true);
     const classes = useStyles(theme);
@@ -95,6 +120,12 @@ const LayoutWrapper = ({children}: any) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     const {setAuthState} = useAuthContext();
     
+    useEffect(() => {
+        if(isAuthenticated){
+            getUserDetails();
+        }
+    }, [])
+
     useEffect(()=>{
         setHasDrawer(params?.spaceId? true : false)
     },[params])
@@ -117,7 +148,7 @@ const LayoutWrapper = ({children}: any) => {
     }
 
     return(
-        <Container className={classes.pageContainer} style={{alignItems: isDrawerOpen? 'end': 'start'}}>
+        <Container className={classes.pageContainer} style={{alignItems: hasDrawer && isDrawerOpen? 'end': 'center'}}>
         <AppBar color="primary" className={classes.appBar} position='fixed' style={{width: hasDrawer && isDrawerOpen? 'calc(100% - 175px)': '100%'}}>
             <Container className={classes.barContent}>
                 <Toolbar disableGutters className={classes.toolbar}>
@@ -129,12 +160,18 @@ const LayoutWrapper = ({children}: any) => {
                         <StickyNote2OutlinedIcon fontSize="large" className={classes.logo} onClick={reroute.bind(null, '/')}/>
                     }
                     <IconButton onClick={openMenu}>
-                        <AccountCircleOutlinedIcon fontSize="large" className={classes.logo}/>
+                        {userDetails ? 
+                            <span className={classes.assigneeRow}>
+                                <Avatar className={classes.assigneeAvatar}>{getInitials(`${userDetails?.firstName} ${userDetails?.lastName}`)}</Avatar>
+                            </span>
+                            : <AccountCircleOutlinedIcon fontSize="large" className={classes.logo}/>
+                        }
+                        
                     </IconButton>
                     <Menu 
                       anchorEl={anchorEl}
                       anchorOrigin={{
-                        vertical: 'top',
+                        vertical: 'bottom',
                         horizontal: 'right',
                       }}
                       keepMounted
@@ -145,12 +182,15 @@ const LayoutWrapper = ({children}: any) => {
                       open={Boolean(anchorEl)}
                       onClose={closeMenu}
                     >
+                        <span className={classes.userName}>
+                            <Typography variant='body1' component='span'>{`${userDetails?.firstName} ${userDetails?.lastName}`}</Typography>
+                        </span>
                         <MenuItem onClick={logout}>Logout</MenuItem>
                     </Menu>
                 </Toolbar>
             </Container>
         </AppBar>
-        {params?.spaceId &&
+        {hasDrawer &&
             <Drawer
                 anchor="left"
                 open={isDrawerOpen}
@@ -165,12 +205,8 @@ const LayoutWrapper = ({children}: any) => {
                 {/* <br/>
                 <hr className={classes.divider}/>
                 <br/> */}
-                <Accordion className={classes.drawerDropdown}>
-                    <AccordionSummary classes={{content: classes.drawerDropdownTitle, root:classes.drawerDropdownTitle}}>Folders</AccordionSummary>
-                    <AccordionDetails className={classes.drawerDropdownContent}>
-                        <FoldersContainer/>
-                    </AccordionDetails>
-                </Accordion>
+
+                <FoldersContainer/>
                 <hr className={classes.divider}/>
             </Drawer>
         }

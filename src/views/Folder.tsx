@@ -159,7 +159,7 @@ const Folder = ({tasks, loading, error, selectedFolder, team, getTasks, updateTa
         }
         
         getTasks(params.folderId, filters);
-    },[searchString, taskType, taskPriority, taskAssignee])
+    },[searchString, taskType, taskPriority, taskAssignee, selectedFolder])
 
     useEffect(()=>{
     },[tasks])

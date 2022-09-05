@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         actions:{
             paddingTop: 0,
-            display:'flex',
-            justifyContent:'space-between'
+            display:'flex !important',
+            justifyContent:'space-between !important'
         }
     })
 )
@@ -42,7 +42,7 @@ const ConfirmationModal = ({onConfirm, onClose, open, title, description}: any) 
                     {description}
                 </DialogContentText>
             </DialogContent>
-            <DialogActions>
+            <DialogActions className={classes.actions}>
                 <Button onClick={onClose} color='info'>Cancel</Button>
                 <Button onClick={onConfirm} variant='contained' color='secondary'>OK</Button>
             </DialogActions>
