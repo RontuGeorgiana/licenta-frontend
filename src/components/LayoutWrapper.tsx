@@ -1,7 +1,7 @@
 import { ArrowBackIosNew, MenuOutlined } from '@mui/icons-material';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import StickyNote2OutlinedIcon from '@mui/icons-material/StickyNote2Outlined';
-import { Accordion, AccordionDetails, AccordionSummary, AppBar, Avatar, Container, Drawer, IconButton, Menu, MenuItem, Theme, Toolbar, Typography } from "@mui/material";
+import { AppBar, Avatar, Container, Drawer, IconButton, Menu, MenuItem, Theme, Toolbar, Typography } from "@mui/material";
 import { createStyles, makeStyles, useTheme } from '@mui/styles';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
             color: theme.palette.primary.contrastText,
         },
         drawerMenu:{
-         background:`${theme.palette.primary.main} !important`,
+         background:`${theme.palette.background.default} !important`,
          width:'175px',
          overflowX: 'hidden',
         //  padding:'8px'
@@ -51,7 +51,8 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: '0 !important',
             display: 'flex !importat',
             flexDirection: 'column',
-            alignItems:'center'
+            alignItems:'center',
+            maxWidth: 'none !important'
         },
         drawerHeader:{
             display: 'flex',
@@ -61,7 +62,8 @@ const useStyles = makeStyles((theme: Theme) =>
             minHeight: '46px',
             background: theme.palette.primary.main,
             // borderBottom: `1px solid ${theme.palette.primary.dark}`
-            boxShadow: '0px 2px 4px 1px rgb(0 0 0 / 17%)'
+            boxShadow: '0px 2px 4px 1px rgb(0 0 0 / 17%)',
+            cursor:'pointer'
         },
         drawerTitle: {
             display:'inline-block'
@@ -112,19 +114,22 @@ const useStyles = makeStyles((theme: Theme) =>
 const LayoutWrapper = ({userDetails, isLoading, error, getUserDetails, children}: any) => {
     const theme = useTheme();
     const params = useParams();
-    const {isAuthenticated} = useAuthContext();
+    const {isAuthenticated, setAuthState} = useAuthContext();
     const [hasDrawer, setHasDrawer] = useState<boolean>(params?.spaceId? true : false);
     const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(true);
     const classes = useStyles(theme);
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-    const {setAuthState} = useAuthContext();
     
     useEffect(() => {
         if(isAuthenticated){
             getUserDetails();
         }
     }, [])
+
+    useEffect(()=>{
+        setAuthState({isAuthenticated, userDetails})
+    },[userDetails])
 
     useEffect(()=>{
         setHasDrawer(params?.spaceId? true : false)
@@ -198,8 +203,8 @@ const LayoutWrapper = ({userDetails, isLoading, error, getUserDetails, children}
                 classes={{paper: classes.drawerMenu}}
                 variant='persistent'
             >
-                <div className={classes.drawerHeader}>
-                    <StickyNote2OutlinedIcon fontSize="medium" onClick={reroute.bind(null, '/')}/>
+                <div className={classes.drawerHeader} onClick={reroute.bind(null, '/')}>
+                    <StickyNote2OutlinedIcon fontSize="medium"/>
                     <Typography variant="h6" className={classes.drawerTitle}>STICK TO IT</Typography>
                 </div>
                 {/* <br/>

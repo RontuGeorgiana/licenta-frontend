@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme: Theme)=>
         },
         accordionDetails:{
             padding:' 0 0 0 4px !important',
-            background: theme.palette.primary.light
         },
         menuItem:{
             display:'flex',

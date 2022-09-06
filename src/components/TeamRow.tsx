@@ -1,4 +1,4 @@
-import { AddOutlined, Delete, Edit, Logout, ManageAccounts, MoreHoriz } from "@mui/icons-material";
+import { AddOutlined, Delete, Edit, ExpandMore, Logout, ManageAccounts, MoreHoriz } from "@mui/icons-material";
 import { Accordion, AccordionDetails, AccordionSummary, IconButton, Menu, MenuItem, Stack, Theme, Typography, useTheme } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
 import { useState } from "react";
@@ -27,8 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
             margin:'0px !important',
         },
         accordionContent:{
-            backgroundColor: theme.palette.primary.light,
-            padding:'0px !important'
+            padding:'0px !important',
         },
         accordionList:{
             padding:'8px 0px'
@@ -41,6 +40,9 @@ const useStyles = makeStyles((theme: Theme) =>
             display:'flex',
             alignItems:'center',
             color: `${theme.palette.error.main} !important`,
+        },
+        rotated:{
+            transform: 'rotate(180deg)'
         }
     })
 )
@@ -55,6 +57,7 @@ const TeamRow = ({team, editTeam, deleteTeam, addSpace, leaveTeam}: any) => {
     const [isManageMembersOpen, setIsManageMembersOpen] = useState(false);
     const [isLeaveTeamOpen, setIsLeaveTeamOpen] = useState(false);
     const [isAddSpaceOpen, setIsAddSpaceOpen] = useState(false);
+    const [isExpanded, setExpanded] = useState(false);
 
     const openMenu = (event: React.MouseEvent<HTMLElement>) => {
         event.stopPropagation();
@@ -110,8 +113,12 @@ const TeamRow = ({team, editTeam, deleteTeam, addSpace, leaveTeam}: any) => {
 
     return(
         <>
-            <Accordion className={classes.accordion}>
-                <AccordionSummary classes={{root: classes.titleContainer, content: classes.accordionTitle}}>
+            <Accordion expanded={isExpanded} onChange={setExpanded.bind(null,!isExpanded)} className={classes.accordion}>
+                <AccordionSummary
+                    expandIcon={<ExpandMore className={classes.rotated}/>} 
+                    classes={{root: classes.titleContainer, content: classes.accordionTitle}}
+                    style={{background: `${isExpanded? theme.palette.primary.light : theme.palette.background.default}`}}
+                    >
                     <Typography variant='body1' onClick={accessTeam}>{team.name}</Typography>
                     <div>
                         <IconButton onClick={openMenu}>

@@ -1,5 +1,5 @@
 import { AddOutlined } from "@mui/icons-material"
-import { Box, Card, Grid, IconButton, InputLabel, MenuItem, Select, Stack, Theme, Typography, useTheme } from "@mui/material"
+import { Box, Button, Card, Grid, InputLabel, MenuItem, Select, Stack, Theme, Typography, useTheme } from "@mui/material"
 import { createStyles, makeStyles } from "@mui/styles"
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
@@ -193,9 +193,10 @@ const EventList = ({teamId, events, getEvents, selectEvent}: any) => {
                                 )}
                             </Select> 
                         </div>
-                        <IconButton onClick={setCreateEventOpen.bind(null, true)}>
-                            <AddOutlined />
-                        </IconButton>
+                        <Button onClick={setCreateEventOpen.bind(null, true)} color='info'>
+                            <AddOutlined sx={{fontSize:'1rem'}}/>
+                            <Typography variant='body2' component='span'>Add event</Typography>
+                        </Button>
                     </div>
             <Card>
                 <Stack>

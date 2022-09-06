@@ -5,9 +5,9 @@ import './App.css';
 import theme from './assets/theme';
 import { AuthContext, useAuthContext } from './auth/AuthContext';
 import { isUserLoggedIn } from './auth/utils/utils';
-import LayoutWrapper from './containers/layoutWrapper.container';
 import Folder from './containers/folder.container';
 import Home from './containers/home.container';
+import LayoutWrapper from './containers/layoutWrapper.container';
 import Space from './containers/space.container';
 import Team from './containers/team.container';
 import Login from './views/Login';
@@ -26,6 +26,7 @@ function RequireAuth({ children }: any) {
 function App() {
   const [authState, setAuthState] = useState({
     isAuthenticated: isUserLoggedIn(),
+    userDetails: null
   });
 
 

@@ -1,5 +1,5 @@
 import { AddOutlined, PeopleOutlined, PersonOutlined, Search } from "@mui/icons-material";
-import { Card, Container, Grid, IconButton, InputLabel, MenuItem, Select, Tab, Tabs, TextField, Theme, ToggleButton, ToggleButtonGroup, Typography, useTheme } from "@mui/material";
+import { Button, Card, Container, Grid, InputLabel, MenuItem, Select, Tab, Tabs, TextField, Theme, ToggleButton, ToggleButtonGroup, Typography, useTheme } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
 import debounce from "lodash.debounce";
 import { useCallback, useEffect, useState } from "react";
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             justifyContent: "start",
             alignItems: 'end',
-            width:'100%',
+            width:'80%',
         },
         tabsFlex:{
             paddingTop:'5px'
@@ -272,9 +272,10 @@ const Folder = ({tasks, loading, error, selectedFolder, team, getTasks, updateTa
                             <Tab key={`${key}tab`} label={(Status as any)[key]} value={(Status as any)[key]} className={status === (Status as any)[key]? classes.tabSelected : classes.tab} />
                         ))}
                     </Tabs>
-                    <IconButton onClick={setCreateTaskOpen.bind(null, true)}>
-                        <AddOutlined sx={{fontSize:'1.2rem', color: theme.palette.info.main}}/>
-                    </IconButton>
+                    <Button onClick={setCreateTaskOpen.bind(null, true)} color='info'>
+                        <AddOutlined sx={{fontSize:'1rem'}}/>
+                        <Typography variant='body2' component='span'>Add task</Typography>
+                    </Button>
                 </div>
                 
                 <Card className={classes.card}>

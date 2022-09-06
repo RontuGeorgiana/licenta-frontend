@@ -14,7 +14,7 @@ const useStyles =  makeStyles((theme: Theme) =>
             // alignItems:'center',
             padding:'8px 1rem',
            '&:hover':{
-               backgroundColor: theme.palette.primary.main
+               backgroundColor: theme.palette.primary.light
            } 
         },
         buttonContainer:{

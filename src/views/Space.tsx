@@ -1,5 +1,5 @@
 import { AddOutlined } from '@mui/icons-material';
-import { Card, Container, IconButton, Theme, Typography, useTheme } from '@mui/material';
+import { Button, Card, Container, Theme, Typography, useTheme } from '@mui/material';
 import { createStyles, makeStyles } from '@mui/styles';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -9,7 +9,19 @@ import FolderRow from '../containers/folderRow.container';
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         card:{
-            padding:'16px'
+            padding:'16px',
+            width:'100%',
+            margin:'0 16px',
+            height:'100%',
+            borderTopLeftRadius:'0 !important',
+        },
+        container:{
+            height:'100%',
+            width:'100%',
+            display: 'flex !important',
+            flexDirection:'column',
+            alignItems: 'center',
+            justifyContent: 'start',
         },
         titleContainer:{
             display: 'flex',
@@ -46,12 +58,13 @@ const Space = ({getFolders, selectFolder, createFolder, folders, error, isLoadin
 
     return (
         <>
-        <Container>
+        <Container className={classes.container}>
             <div className={classes.titleContainer}>
                <Typography variant='h5'>Folders</Typography>
-               <IconButton onClick={setCreateOpen.bind(null,true)}>
-                   <AddOutlined />
-               </IconButton>
+               <Button onClick={setCreateOpen.bind(null,true)} color='info'>
+                   <AddOutlined sx={{fontSize:'1rem'}}/>
+                   <Typography variant='body2' component='span'>Add folder</Typography>
+               </Button>
             </div>
             <Card className={classes.card}>
                 {folders && folders?.folderTree?.length > 0 &&

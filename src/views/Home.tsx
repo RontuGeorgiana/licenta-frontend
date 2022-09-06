@@ -1,7 +1,8 @@
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import { Card, Container, IconButton, Theme, Typography, useTheme } from "@mui/material";
+import { Button, Card, Container, Theme, Typography, useTheme } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
 import { useEffect, useState } from 'react';
+import { useAuthContext } from '../auth/AuthContext';
 import NameModal from '../components/NameModal';
 import TeamRow from "../components/TeamRow";
 import { IListTeam } from "../interfaces/team.interface";
@@ -18,6 +19,13 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: 'start',
             // padding:'16px 10%',
             // backgroundColor: theme.palette.primary.light
+        },
+        pageHeader:{
+            width:'100%',
+            display: 'flex !important',
+            flexDirection:'column',
+            alignItems: 'center',
+            justifyContent: 'start',
         },
         titleContainer:{
             display: 'flex',
@@ -39,6 +47,7 @@ const Home = ({getTeams, addTeam, renameTeam, deleteTeam, leaveTeam, addSpace, t
     const theme = useTheme();
     const classes = useStyles(theme);
     const [isAddTeamOpen, setIsAddTeamOpen] = useState(false);
+    const {userDetails} = useAuthContext();
 
     useEffect(()=>{
         getTeams();
@@ -58,16 +67,17 @@ const Home = ({getTeams, addTeam, renameTeam, deleteTeam, leaveTeam, addSpace, t
     return(
         <>
         <Container className={classes.container}>
-            <div>
+            <div className={classes.pageHeader}>
                 <Typography variant='h6'>{getCurrentDay()}</Typography>
-                <Typography variant='h5'>Welcome, user</Typography>
+                <Typography variant='h5'>{`Welcome, ${userDetails? userDetails?.firstName : 'user'}`}</Typography>
 
             </div>
             <div className={classes.titleContainer}>
                <Typography variant='h5'>Teams</Typography>
-               <IconButton onClick={setIsAddTeamOpen.bind(null,true)}>
-                   <AddOutlinedIcon sx={{fontSize:'1.5rem', color: theme.palette.info.main}}/>
-               </IconButton>
+               <Button onClick={setIsAddTeamOpen.bind(null,true)} color='info'>
+                   <AddOutlinedIcon sx={{fontSize:'1rem'}}/>
+                   <Typography variant='body2' component='span'>Add team</Typography>
+               </Button>
             </div>
             <Card className={classes.card}>
                 {teams && teams.map((team: IListTeam) => (
