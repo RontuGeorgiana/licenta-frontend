@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import NameModal from '../components/NameModal';
 import TeamRow from "../components/TeamRow";
 import { IListTeam } from "../interfaces/team.interface";
+import { Days, Months } from '../utils/utils';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -22,7 +23,8 @@ const useStyles = makeStyles((theme: Theme) =>
             display: 'flex',
             justifyContent: "space-between",
             alignItems: 'center',
-            width:'100%'
+            width:'100%',
+            marginTop:'40px'
         },
         card:{
             width:'100%',
@@ -48,9 +50,19 @@ const Home = ({getTeams, addTeam, renameTeam, deleteTeam, leaveTeam, addSpace, t
         setIsAddTeamOpen(false);
     }
 
+    const getCurrentDay = ()=>{
+        const date = new Date();
+        return `${(Days as any)[date.getDay()]}, ${date.getDate()} ${(Months as any)[date.getMonth()]} ${date.getFullYear()}`;
+    }
+
     return(
         <>
         <Container className={classes.container}>
+            <div>
+                <Typography variant='h6'>{getCurrentDay()}</Typography>
+                <Typography variant='h5'>Welcome, user</Typography>
+
+            </div>
             <div className={classes.titleContainer}>
                <Typography variant='h5'>Teams</Typography>
                <IconButton onClick={setIsAddTeamOpen.bind(null,true)}>

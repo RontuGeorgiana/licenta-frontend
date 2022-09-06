@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
             boxShadow: 'none !important',
             border: 'none',
             borderRadius: '0 !important',
-            background: `${theme.palette.background.default}`,
+            background: `${theme.palette.primary.main}`,
             margin: '0 !important',
         },
         accordionTitle:{
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
             minHeight: '0px !important'
         },
         accordionContent:{
-            backgroundColor: theme.palette.background.default,
+            backgroundColor: theme.palette.primary.main,
             padding:'0px 4px!important',
             borderTop: `1px solid ${theme.palette.secondary.light}`
         },
@@ -31,27 +31,28 @@ const useStyles = makeStyles((theme: Theme) =>
             marginLeft:'4px !important'
         },
         dropdownContainer:{
-            background: `${theme.palette.background.default}`,
+            background: `${theme.palette.primary.main}`,
             margin: '50px 0 0 0 !important',
         },
         drawerDropdown:{
             boxShadow: 'none !important',
             borderRadius: '0 !important',
             margin: '0 !important',
-            background: `${theme.palette.background.default}`,
+            background: `${theme.palette.primary.main}`,
         },
         drawerDropdownTitle:{
             padding:'0px !important',
             margin:'0px !important',
+            background: `${theme.palette.primary.main}`,
             minHeight: '0px !important'
         },
         drawerDropdownContent:{
-            backgroundColor: `${theme.palette.background.default}`,
+            backgroundColor: `${theme.palette.primary.main}`,
             padding:'0px 4px!important',
             borderTop: `1px solid ${theme.palette.secondary.light}`
         },
         selectedTab:{
-            background: `${theme.palette.primary.light} !important`
+            background: `${theme.palette.background.default} !important`
         }
 
     })

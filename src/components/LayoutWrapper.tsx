@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) =>
             color: theme.palette.primary.contrastText,
         },
         drawerMenu:{
-         background:`${theme.palette.background.default} !important`,
+         background:`${theme.palette.primary.main} !important`,
          width:'175px',
          overflowX: 'hidden',
         //  padding:'8px'
