@@ -1,5 +1,6 @@
 import { Avatar, Grid, Theme, Typography, useTheme } from "@mui/material";
 import { createStyles, makeStyles } from "@mui/styles";
+import { numberToPriority, PriorityIcons } from "../utils/priority";
 import { TypeIcons } from "../utils/type";
 import { getInitials } from "../utils/utils";
 
@@ -56,7 +57,7 @@ const SubTaskRow = ({task, selectTask}: any) => {
                 <Grid item xs={5} md={7}>
                 </Grid>
                 <Grid item xs={2} md={1} className={classes.taskDetails}>
-                    <Typography variant="body2">{task?.priority? task.priority : '-'}</Typography>
+                    <Typography variant="body2">{task?.priority? (PriorityIcons as any)[(numberToPriority as any)[task.priority]] : '-'}</Typography>
                 </Grid>
                 <Grid item xs={2} md={1} className={classes.taskDetails}>
                     <Avatar className={classes.assigneeAvatar}>{task?.asignee?.name? getInitials(task?.asignee?.name) : '-'}</Avatar>

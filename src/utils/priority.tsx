@@ -9,11 +9,11 @@ export enum Priority {
 }
 
 export const PriorityIcons = {
-    critical: <KeyboardDoubleArrowUp fontSize='small' color='error'/>,
-    major: <KeyboardArrowUp fontSize='small' color='error'/>,
-    medium: <HorizontalRule fontSize='small' color='warning'/>,
-    low: <KeyboardArrowDown fontSize='small' color="secondary"/>,
-    minor: <KeyboardDoubleArrowDown fontSize='small' color="info"/>
+    critical: <KeyboardDoubleArrowUp fontSize='medium' color='error'/>,
+    major: <KeyboardArrowUp fontSize='medium' color='error'/>,
+    medium: <HorizontalRule fontSize='medium' color='warning'/>,
+    low: <KeyboardArrowDown fontSize='medium' color="secondary"/>,
+    minor: <KeyboardDoubleArrowDown fontSize='medium' color="info"/>
 }
 
 export const numberToPriority = {

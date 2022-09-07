@@ -185,7 +185,7 @@ const EventList = ({teamId, events, getEvents, selectEvent}: any) => {
                             />
                         </LocalizationProvider>
                         <div className={classes.selectContainer}>
-                            <InputLabel className={classes.filterLabel} id='typeSelectLabel'>Task type</InputLabel>
+                            <InputLabel className={classes.filterLabel} id='typeSelectLabel'>Event type</InputLabel>
                             <Select labelId='typeSelectLabel' classes={{select: classes.select}} placeholder='Task type' onChange={onSelectType}>
                                 <MenuItem value={''}>---</MenuItem>
                                 {Object.values(EventType).map((type: any)=>

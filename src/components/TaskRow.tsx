@@ -3,6 +3,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Avatar, Grid, IconButton
 import { createStyles, makeStyles } from "@mui/styles";
 import { useState } from "react";
 import SetAssigneeModal from "../containers/setAssigneeModal.container";
+import { numberToPriority, PriorityIcons } from "../utils/priority";
 import { Status } from "../utils/status";
 import { TypeIcons } from "../utils/type";
 import { getInitials } from "../utils/utils";
@@ -140,7 +141,7 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask, teamId}: any) => {
                     <Grid item xs={3} md={6}>
                     </Grid>
                     <Grid item xs={2} md={1} className={classes.taskDetails}>
-                        <Typography variant="body2">{task?.priority? task.priority : '-'}</Typography>
+                        <Typography variant="body2">{task?.priority? (PriorityIcons as any)[(numberToPriority as any)[task.priority]] : '-'}</Typography>
                     </Grid>
                     <Grid item xs={2} md={1} className={classes.taskDetails}>
                         <Avatar className={classes.assigneeAvatar} onClick={onAssign}>{task?.asignee? getInitials(task?.asignee?.name) : '-'}</Avatar>
@@ -203,7 +204,7 @@ const TaskRow = ({task, clickTask, updateTask, deleteTask, teamId}: any) => {
                 <Grid item xs={3} md={6}>
                 </Grid>
                 <Grid item xs={2} md={1} className={classes.taskDetails}>
-                    <Typography variant="body2">{task?.priority? task.priority : '-'}</Typography>
+                    <Typography variant="body2">{task?.priority? (PriorityIcons as any)[(numberToPriority as any)[task.priority]] : '-'}</Typography>
                 </Grid>
                 <Grid item xs={2} md={1} className={classes.taskDetails}>
                     <Avatar className={classes.assigneeAvatar} onClick={onAssign}>{task?.asignee? getInitials(task?.asignee?.name) : '-'}</Avatar>

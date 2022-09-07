@@ -214,6 +214,9 @@ const TaskModal = ({open, onClose, parent, editable = false, taskId, task, error
         if(data.estimation){
             payload['estimation'] = timeToSeconds(data.estimation);
         }
+        if(data.priority){
+            payload['priority'] = data.priority;
+        }
         if(asignee){
             payload['asignee']=asignee.asignee;
         }
